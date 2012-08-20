@@ -166,79 +166,79 @@ a:hover {
 .container,
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 1770px;
+  width: 1290px;
 }
 .span12 {
-  width: 1770px;
+  width: 1290px;
 }
 .span11 {
-  width: 1620px;
+  width: 1180px;
 }
 .span10 {
-  width: 1470px;
+  width: 1070px;
 }
 .span9 {
-  width: 1320px;
+  width: 960px;
 }
 .span8 {
-  width: 1170px;
+  width: 850px;
 }
 .span7 {
-  width: 1020px;
+  width: 740px;
 }
 .span6 {
-  width: 870px;
+  width: 630px;
 }
 .span5 {
-  width: 720px;
+  width: 520px;
 }
 .span4 {
-  width: 570px;
+  width: 410px;
 }
 .span3 {
-  width: 420px;
+  width: 300px;
 }
 .span2 {
-  width: 270px;
+  width: 190px;
 }
 .span1 {
-  width: 120px;
+  width: 80px;
 }
 .offset12 {
-  margin-left: 1830px;
+  margin-left: 1350px;
 }
 .offset11 {
-  margin-left: 1680px;
+  margin-left: 1240px;
 }
 .offset10 {
-  margin-left: 1530px;
+  margin-left: 1130px;
 }
 .offset9 {
-  margin-left: 1380px;
+  margin-left: 1020px;
 }
 .offset8 {
-  margin-left: 1230px;
+  margin-left: 910px;
 }
 .offset7 {
-  margin-left: 1080px;
+  margin-left: 800px;
 }
 .offset6 {
-  margin-left: 930px;
+  margin-left: 690px;
 }
 .offset5 {
-  margin-left: 780px;
+  margin-left: 580px;
 }
 .offset4 {
-  margin-left: 630px;
+  margin-left: 470px;
 }
 .offset3 {
-  margin-left: 480px;
+  margin-left: 360px;
 }
 .offset2 {
-  margin-left: 330px;
+  margin-left: 250px;
 }
 .offset1 {
-  margin-left: 180px;
+  margin-left: 140px;
 }
 .row-fluid {
   width: 100%;
@@ -262,58 +262,58 @@ a:hover {
   box-sizing: border-box;
   float: left;
   margin-left: 2.127659574%;
-  *margin-left: 2.0994109864293784%;
+  *margin-left: 2.0888998840775193%;
 }
 .row-fluid [class*="span"]:first-child {
   margin-left: 0;
 }
 .row-fluid .span12 {
   width: 99.99999998999999%;
-  *width: 99.97175140242938%;
+  *width: 99.9612403000775%;
 }
 .row-fluid .span11 {
   width: 91.489361693%;
-  *width: 91.46111310542939%;
+  *width: 91.45060200307752%;
 }
 .row-fluid .span10 {
   width: 82.97872339599999%;
-  *width: 82.95047480842938%;
+  *width: 82.9399637060775%;
 }
 .row-fluid .span9 {
   width: 74.468085099%;
-  *width: 74.43983651142939%;
+  *width: 74.42932540907752%;
 }
 .row-fluid .span8 {
   width: 65.95744680199999%;
-  *width: 65.92919821442938%;
+  *width: 65.9186871120775%;
 }
 .row-fluid .span7 {
   width: 57.446808505%;
-  *width: 57.41855991742938%;
+  *width: 57.40804881507752%;
 }
 .row-fluid .span6 {
   width: 48.93617020799999%;
-  *width: 48.90792162042937%;
+  *width: 48.897410518077514%;
 }
 .row-fluid .span5 {
   width: 40.425531911%;
-  *width: 40.39728332342938%;
+  *width: 40.38677222107752%;
 }
 .row-fluid .span4 {
   width: 31.914893614%;
-  *width: 31.886645026429377%;
+  *width: 31.87613392407752%;
 }
 .row-fluid .span3 {
   width: 23.404255317%;
-  *width: 23.376006729429378%;
+  *width: 23.36549562707752%;
 }
 .row-fluid .span2 {
   width: 14.89361702%;
-  *width: 14.86536843242938%;
+  *width: 14.85485733007752%;
 }
 .row-fluid .span1 {
   width: 6.382978723%;
-  *width: 6.354730135429379%;
+  *width: 6.344219033077519%;
 }
 .container {
   margin-right: auto;
@@ -756,126 +756,126 @@ table {
 }
 .table tbody tr:hover td,
 .table tbody tr:hover th {
-  background-color: #999999;
+  background-color: #222222;
 }
 table .span1 {
   float: none;
-  width: 104px;
+  width: 64px;
   margin-left: 0;
 }
 table .span2 {
   float: none;
-  width: 254px;
+  width: 174px;
   margin-left: 0;
 }
 table .span3 {
   float: none;
-  width: 404px;
+  width: 284px;
   margin-left: 0;
 }
 table .span4 {
   float: none;
-  width: 554px;
+  width: 394px;
   margin-left: 0;
 }
 table .span5 {
   float: none;
-  width: 704px;
+  width: 504px;
   margin-left: 0;
 }
 table .span6 {
   float: none;
-  width: 854px;
+  width: 614px;
   margin-left: 0;
 }
 table .span7 {
   float: none;
-  width: 1004px;
+  width: 724px;
   margin-left: 0;
 }
 table .span8 {
   float: none;
-  width: 1154px;
+  width: 834px;
   margin-left: 0;
 }
 table .span9 {
   float: none;
-  width: 1304px;
+  width: 944px;
   margin-left: 0;
 }
 table .span10 {
   float: none;
-  width: 1454px;
+  width: 1054px;
   margin-left: 0;
 }
 table .span11 {
   float: none;
-  width: 1604px;
+  width: 1164px;
   margin-left: 0;
 }
 table .span12 {
   float: none;
-  width: 1754px;
+  width: 1274px;
   margin-left: 0;
 }
 table .span13 {
   float: none;
-  width: 1904px;
+  width: 1384px;
   margin-left: 0;
 }
 table .span14 {
   float: none;
-  width: 2054px;
+  width: 1494px;
   margin-left: 0;
 }
 table .span15 {
   float: none;
-  width: 2204px;
+  width: 1604px;
   margin-left: 0;
 }
 table .span16 {
   float: none;
-  width: 2354px;
+  width: 1714px;
   margin-left: 0;
 }
 table .span17 {
   float: none;
-  width: 2504px;
+  width: 1824px;
   margin-left: 0;
 }
 table .span18 {
   float: none;
-  width: 2654px;
+  width: 1934px;
   margin-left: 0;
 }
 table .span19 {
   float: none;
-  width: 2804px;
+  width: 2044px;
   margin-left: 0;
 }
 table .span20 {
   float: none;
-  width: 2954px;
+  width: 2154px;
   margin-left: 0;
 }
 table .span21 {
   float: none;
-  width: 3104px;
+  width: 2264px;
   margin-left: 0;
 }
 table .span22 {
   float: none;
-  width: 3254px;
+  width: 2374px;
   margin-left: 0;
 }
 table .span23 {
   float: none;
-  width: 3404px;
+  width: 2484px;
   margin-left: 0;
 }
 table .span24 {
   float: none;
-  width: 3554px;
+  width: 2594px;
   margin-left: 0;
 }
 form {
@@ -1121,40 +1121,40 @@ textarea,
   margin-left: 0;
 }
 input.span12, textarea.span12, .uneditable-input.span12 {
-  width: 1760px;
+  width: 1280px;
 }
 input.span11, textarea.span11, .uneditable-input.span11 {
-  width: 1610px;
+  width: 1170px;
 }
 input.span10, textarea.span10, .uneditable-input.span10 {
-  width: 1460px;
+  width: 1060px;
 }
 input.span9, textarea.span9, .uneditable-input.span9 {
-  width: 1310px;
+  width: 950px;
 }
 input.span8, textarea.span8, .uneditable-input.span8 {
-  width: 1160px;
+  width: 840px;
 }
 input.span7, textarea.span7, .uneditable-input.span7 {
-  width: 1010px;
+  width: 730px;
 }
 input.span6, textarea.span6, .uneditable-input.span6 {
-  width: 860px;
+  width: 620px;
 }
 input.span5, textarea.span5, .uneditable-input.span5 {
-  width: 710px;
+  width: 510px;
 }
 input.span4, textarea.span4, .uneditable-input.span4 {
-  width: 560px;
+  width: 400px;
 }
 input.span3, textarea.span3, .uneditable-input.span3 {
-  width: 410px;
+  width: 290px;
 }
 input.span2, textarea.span2, .uneditable-input.span2 {
-  width: 260px;
+  width: 180px;
 }
 input.span1, textarea.span1, .uneditable-input.span1 {
-  width: 110px;
+  width: 70px;
 }
 input[disabled],
 select[disabled],
@@ -2967,7 +2967,7 @@ input[type="submit"].btn.btn-mini {
 }
 .navbar-fixed-top .container,
 .navbar-fixed-bottom .container {
-  width: 1770px;
+  width: 1290px;
 }
 .navbar-fixed-top {
   top: 0;

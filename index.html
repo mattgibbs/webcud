@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>LCLS Status</title>
 		<meta name="author" content="Matt Gibbs">
-		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="bootstrap/css/bootstrap-mon.min.css" rel="stylesheet">
 		<script src="d3/d3.v2.min.js"></script>
 		<script src="d3/cubism.v1.min.js"></script>
 		<style>
@@ -22,7 +22,7 @@
 		.axis text {
 		  stroke: #FFF;
 		}
-
+<h4>
 		.axis path {
 		  display: none;
 		}
@@ -77,7 +77,7 @@
 		}
 
 		.line {
-		  background: #000;
+		  background: #FFF;
 		  z-index: 2;
 		}
 
@@ -93,29 +93,29 @@
 					<div class="row">
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Machine Rate</h5>
+								<h4>Machine Rate</h4>
 							</div>
 							<h1><span id="machineRate">120 Hz</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Bunch Charge</h5>
+								<h4>Bunch Charge</h4>
 							</div>
 							<h1><span id="bunchCharge">150 pC</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>L3 Energy</h5>
+								<h4>L3 Energy<small> + L3 Vernier</small></h4>
 							</div>
-							<h1><span id="L3Energy">6.71 GeV</span></h1>
+							<h1><span id="L3Energy">6.71 GeV</span><span id="L3Vernier"> + 13 MeV</span></h1>
 						</div>
 					</div>
 					<div class="row">
 						<div class="span4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Emittance</h5>
+								<h4>Emittance</h4>
 							</div>
-							<table class="table">
+							<table class="table" style="font-size: 18px;">
 								<thead>
 									<tr>
 										<th>Region</th>
@@ -149,13 +149,39 @@
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>BC1 Peak Current</h5>
+								<h4>BC1 Peak Current</h4>
 							</div>
 							<h1><span id="BC1PeakCurrent">210 A</span></h1>
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>BC2 Peak Current</h5>
+								<h4>BC2 Peak Current</h4>
 							</div>
 							<h1><span id="BC2PeakCurrent">3100 A</span></h1>
+						</div>
+					</div>
+					<div class="row">
+						<div class="span1">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>L1S Phase</h4>
+							</div>
+							<h1><span id="L1SPhase">-26.5&deg</span></h1>
+						</div>
+						<div class="span1">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>L2 Phase</h4>
+							</div>
+							<h1><span id="L2Phase">-36.4&deg</span></h1>
+						</div>
+						<div class="span1">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>L3 Phase</h4>
+							</div>
+							<h1><span id="L3Phase">0.0&deg</span></h1>
+						</div>
+						<div class="span3">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>Electron Destination</h4>
+							</div>
+							<h1><span id="ElectronDestination">Undulator</span></h1>
 						</div>
 					</div>
 				</div>
@@ -164,39 +190,58 @@
 						<h1>FEL Status</h1>
 					</div>
 					<div class="row">
-						<div class="span4">
+						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>FEL Pulse Energy  <small>As measured by Gas Detectors</small></h5>
+								<h4>FEL Pulse Energy</h4>
 							</div>
 							<h1><span id="GDETEnergy">4.3 mJ</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Photon Energy</h5>
+								<h4>Photon Energy</h4>
 							</div>
 							<h1><span id="photonEnergy">2000 eV</span></h1>
+						</div>
+						<div class="span2">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>Amplification Mode</h4>
+							</div>
+							<h1><span id="amplificationMode">SASE</span></h1>
 						</div>
 					</div>
 					<div class="row">
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Pulse Length</h5>
+								<h4>Pulse Length</h4>
 							</div>
 							<h1><span id="pulseLength">52 fs</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Pulse Length</h5>
+								<h4>Pulse Length</h4>
 							</div>
 							<h1><span id="peakPower">86 GW</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Scheduled User</h5>
+								<h4>Scheduled User</h4>
 							</div>
 							<h1><span id="scheduledUser">AMO</span></h1>
 						</div>
 					</div>
+					<div class="row">
+						<div class="span6">
+							<!-- <img src="linac.png" width="630" height="354"> -->
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="span12">
+					<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+						<h4>Latest E-Log Entry</h4>
+					</div>
+					<h3>C. Graneri Reports that the Alpha is back online.</h3>
 				</div>
 			</div>
 			<div class="row"><!-- graph row begin -->
@@ -205,17 +250,35 @@
 						<h1>24 Hour History</h1>
 					</div>
 					<script>
-						var context = cubism.context().step(1e3).size(1170);
+						var context = cubism.context().step(1e3).size(1290);
 						var fakedata = random("fakedata");
+						var morefake = random("morefake");
 						d3.select("#history").call(function(div) {
+							//div.selectAll(".horizon").data([fakedata, morefake]);
 							div.append("div").attr("class","axis").call(context.axis().orient("bottom"));
+							/*div.insert("div",".axis")
+								.attr("class","horizon")
+								.call(context.horizon()
+									.height(240)
+									.mode("mirror")
+									.title("Gas Detector")
+									.colors(["#3182bd", "#31a354"]));
+							div.insert("div",".axis")
+								.attr("class","horizon")
+								.call(context.horizon()
+									.height(120)
+									.mode("mirror")
+									.title("Peak Current")
+									.colors(["#3182bd", "#31a354"]));*/
+									
+							
 							div.selectAll(".horizon")
 								.data([fakedata])
 								.enter().insert("div",".axis")
 								.attr("class","horizon")
 								.call(context.horizon()
 										.extent([-10, 10])
-										.height(240)
+										.height(320)
 										.mode("mirror")
 										.title("Gas Detector History")
 										.colors(["#3182bd", "#31a354"]));

@@ -11,9 +11,9 @@ function PV(response, query) {
 	var data = {}
 	console.log("Request handler 'PV' was called, with PV = " + PVtoGet + ".");
 	
-	exec("caget -as " + PVtoGet, {timeout:10000, maxBuffer: 20000*1024}, function(error, stdout, stderr) {
+	exec("caget -a -f1 " + PVtoGet, {timeout:10000, maxBuffer: 20000*1024}, function(error, stdout, stderr) {
 		if (error == null) {
-			response.writeHead(200, {"Content-Type": "application/json"});
+			response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
 			
 			//Split the string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
 			var cagetResults = stdout.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});

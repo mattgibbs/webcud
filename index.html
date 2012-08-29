@@ -85,15 +85,6 @@
 		</style>
 	</head>
 	<body>
-		<script>
-			function bindElementToPV(elem, PV, updateRate) {
-				setInterval(function(){
-					d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV, function(json){
-						d3.select(elem).text(json["value"]);
-					});
-				},updateRate);
-			}
-		</script>
 		<div class="container">
 			<div class="row">
 				<div class="span10">
@@ -105,29 +96,19 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Machine Rate</h5>
 							</div>
-							<h1><span id="machineRate">120 Hz</span></h1>
-							<script>
-								bindElementToPV("#machineRate", "SIOC:SYS0:ML00:AO467", 10000);
-							</script>
+							<h1><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467">120 Hz</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Bunch Charge</h5>
 							</div>
-							<h1><span id="bunchCharge">150 pC</span></h1>
-							<script>
-								bindElementToPV("#bunchCharge", "SIOC:SYS0:ML00:AO470", 10000);
-							</script>
+							<h1><span id="bunchCharge" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO470">150 pC</span></h1>
 						</div>
 						<div class="span5">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L3 Energy</h5>
 							</div>
-							<h1><span id="L3Energy">6.71 GeV</span> + <span id="L3Vernier">13 MeV</span></h1>
-							<script>
-								bindElementToPV("#L3Energy", "SIOC:SYS0:ML00:AO500", 10000);
-								bindElementToPV("#L3Vernier", "SIOC:SYS0:ML00:AO289", 10000);
-							</script>
+							<h1><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO289">13 MeV</span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -171,17 +152,11 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>BC1 Peak Current</h5>
 							</div>
-							<h1><span id="BC1PeakCurrent">210 A</span></h1>
-							<script>
-								bindElementToPV("#BC1PeakCurrent", "SIOC:SYS0:ML00:AO485", 10000);
-							</script>
+							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO485">210 A</span></h1>
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>BC2 Peak Current</h5>
 							</div>
-							<h1><span id="BC2PeakCurrent">3100 A</span></h1>
-							<script>
-								bindElementToPV("#BC2PeakCurrent", "SIOC:SYS0:ML00:AO195", 10000);
-							</script>
+							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO195">3100 A</span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -189,37 +164,25 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L1S Phase</h5>
 							</div>
-							<h1><span id="L1SPhase">-26.5&deg</span></h1>
-							<script>
-								bindElementToPV("#L1SPhase", "SIOC:SYS0:ML00:AO479", 10000);
-							</script>
+							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479">-26.5&deg</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L2 Phase</h5>
 							</div>
-							<h1><span id="L2Phase">-36.4&deg</span></h1>
-							<script>
-								bindElementToPV("#L2Phase", "SIOC:SYS0:ML00:AO487", 10000);
-							</script>
+							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487">-36.4&deg</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L3 Phase</h5>
 							</div>
-							<h1><span id="L3Phase">0.0&deg</span></h1>
-							<script>
-								bindElementToPV("#L3Phase", "SIOC:SYS0:ML00:AO499", 10000);
-							</script>
+							<h1><span id="L3Phase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO499">0.0&deg</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Electron Destination</h5>
 							</div>
-							<h1><span id="ElectronDestination">Undulator</span></h1>
-							<script>
-								bindElementToPV("#ElectronDestination", "CUD:MCC0:DESTINATION", 10000);
-							</script>
+							<h1><span id="ElectronDestination" class="PVmonitor" data-pv="CUD:MCC0:DESTINATION">Undulator</span></h1>
 						</div>
 					</div>
 				</div>
@@ -232,19 +195,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>FEL Pulse Energy</h5>
 							</div>
-							<h1><span id="GDETEnergy">4.3 mJ</span></h1>
-							<script>
-								bindElementToPV("#GDETEnergy", "SIOC:SYS0:ML00:AO569", 10000);
-							</script>
+							<h1><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569">4.3 mJ</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Photon Energy</h5>
 							</div>
-							<h1><span id="photonEnergy">2000 eV</span></h1>
-							<script>
-								bindElementToPV("#photonEnergy", "SIOC:SYS0:ML00:AO627", 10000);
-							</script>
+							<h1><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627">2000 eV</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -258,19 +215,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Pulse Length</h5>
 							</div>
-							<h1><span id="pulseLength">52 fs</span></h1>
-							<script>
-								bindElementToPV("#pulseLength", "SIOC:SYS0:ML00:AO820", 10000);
-							</script>
+							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820">52 fs</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>Pulse Length</h5>
+								<h5>Peak Power</h5>
 							</div>
-							<h1><span id="peakPower">86 GW</span></h1>
-							<script>
-								bindElementToPV("#peakPower", "SIOC:SYS0:ML00:AO821", 10000);
-							</script>
+							<h1><span id="peakPower" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO821">86 GW</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -284,10 +235,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Dumb Counter PV</h5>
 							</div>
-							<h1><span id="dumbCounter"></span></h1>
-							<script>
-								bindElementToPV("#dumbCounter", "SIOC:SYS0:ML00:CALC010", 1000);
-							</script>
+							<h1><span id="dumbCounter" class="PVmonitor" data-pv="OSC:LR20:20:M2_PID_OUTPUT" data-updatetime="1000"></span></h1>
 						</div>
 					</div>
 				</div>
@@ -359,6 +307,19 @@
 								callback(null, values = values.slice((start - stop) / step));
 							}, name);
 						}	
+					</script>
+					<script>
+						function bindElementToPV(elem, PV, updateRate) {
+							setInterval(function(){
+								d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV, function(json){
+									d3.select(elem).text(json["value"]);
+								});
+							},updateRate);
+						}
+						d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
+							d3.select(this).text("?");
+							bindElementToPV(this, d.pv, d.updatetime ? d.updatetime : 10000);
+						});
 					</script>
 				</div>
 			</div><!-- graph row end -->	

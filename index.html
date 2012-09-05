@@ -81,7 +81,20 @@
 		  background: #FFF;
 		  z-index: 2;
 		}
-
+		
+		li.elogEntry {
+			display: inline;
+			font-size: 24px;
+			line-height: 40px;
+			font-weight: bold;
+			text-rendering: optimizelegibility;
+		}
+		
+		ul#latestElogEntries {
+			text-decoration: none;
+			padding: .2em 1em;
+		}
+		
 		</style>
 	</head>
 	<body>
@@ -235,7 +248,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Dumb Counter PV</h5>
 							</div>
-							<h1><span id="dumbCounter" class="PVmonitor" data-pv="OSC:LR20:20:M2_PID_OUTPUT" data-updatetime="1000"></span></h1>
+							<h1><span id="dumbCounter" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC010" data-updatetime="1000"></span></h1>
 						</div>
 					</div>
 				</div>
@@ -244,9 +257,43 @@
 			<div class="row">
 				<div class="span20">
 					<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-						<h4>Latest E-Log Entry</h4>
+						<h4>Latest E-Log Entries</h4>
 					</div>
-					<h3>C. Graneri Reports that the Alpha is back online.</h3>
+					<ul id="latestElogEntries" data-updatetime="1000">
+					</ul>
+					<script>
+						setInterval(function(){
+							var rightNow = new Date();
+							var oneHourAgo = new Date(rightNow - 60*60*1000);
+							var endHour = Math.ceil(rightNow.getHours() + rightNow.getMinutes()/60);
+							var startHour = Math.floor(oneHourAgo.getHours() + oneHourAgo.getMinutes()/60);
+							var entryList = d3.select("#latestElogEntries");
+							d3.json("http://mccelog.slac.stanford.edu/elog/dev/mgibbs/dev_elog_display_json.php?shift_field=NONE" + 
+									"&sd_Month=" + (oneHourAgo.getMonth()+1) + 
+									"&sd_Day=" + oneHourAgo.getDate() + 
+									"&sd_Year=" + oneHourAgo.getFullYear() + 
+									"&sd_Hour=" + startHour + 
+									"&ed_Month=" + (rightNow.getMonth()+1) +
+									"&ed_Day=" + rightNow.getDate() +
+									"&ed_Year="+ rightNow.getFullYear() +
+									"&ed_Hour=" + endHour, 
+									function(json){
+										var entries = entryList.selectAll(".elogEntry").data(json, function(d){return d.elogid});
+										entries.enter().append("li").text(function(d) {return d.title}).classed("elogEntry",true);
+										entries.exit().remove();
+							});
+							/*
+							var entryList = d3.select("#latestElogEntries");
+							d3.json("http://mccelog.slac.stanford.edu/elog/dev/mgibbs/dev_elog_display_json.php", 
+									function(json){
+										console.log("Fetched entries from E-Log: ");
+										console.log(json);
+										var entries = entryList.selectAll(".elogEntry").data(json, function(d){return d.elogid});
+										entries.enter().append("li").text(function(d) {return d.title}).classed("elogEntry",true);
+										entries.exit().remove();
+							});*/
+						},10000);
+					</script>
 				</div>
 			</div>
 			<div class="row"><!-- graph row begin -->

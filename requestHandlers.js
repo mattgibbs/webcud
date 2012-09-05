@@ -13,7 +13,7 @@ function PV(response, query) {
 		precision = 2;
 	}
 	var data = {}
-	console.log("Request handler 'PV' was called, with PV = " + PVtoGet + ".");
+	//console.log("Request handler 'PV' was called, with PV = " + PVtoGet + ".");
 	
 	//Spawn a caget process.  This is more complicated than using childProcess.exec, but it is also more secure.
 	var stdoutdata = '', stderrdata = '';
@@ -40,7 +40,7 @@ function PV(response, query) {
 
 			//Split the string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
 			var cagetResults = stdoutdata.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});
-			console.log(cagetResults);
+			//console.log(cagetResults);
 			data = {"PV": cagetResults[0],
 					"value": cagetResults[3],
 			 		"timestamp": cagetResults[1] + " " + cagetResults[2],

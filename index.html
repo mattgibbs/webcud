@@ -90,11 +90,6 @@
 			text-rendering: optimizelegibility;
 		}
 		
-		ul#latestElogEntries {
-			text-decoration: none;
-			padding: .2em 1em;
-		}
-		
 		</style>
 	</head>
 	<body>
@@ -117,11 +112,11 @@
 							</div>
 							<h1><span id="bunchCharge" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO470">150 pC</span></h1>
 						</div>
-						<div class="span5">
+						<div class="span6">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L3 Energy</h5>
 							</div>
-							<h1><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO289">13 MeV</span></h1>
+							<h1><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="2">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO289">13 MeV</span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -132,29 +127,29 @@
 							<table class="table" style="font-size: 18px;">
 								<thead>
 									<tr>
-										<th>Region</th>
+										<th></th>
 										<th>X</th>
 										<th>Y</th>
 									</tr>
 								</thead>
 								<tbody>
 									<tr>
-										<td>OTR-2</td>
+										<th>OTR-2</th>
 										<td id="OTR2XEmit">0.40 / 1.03</td>
 										<td id="OTR2YEmit">0.39 / 1.05</td>
 									</tr>
 									<tr>
-										<td>WS12</td>
+										<th>WS12</th>
 										<td id="WS12XEmit">0.63 / 1.00</td>
 										<td id="WS12YEmit">0.60 / 1.02</td>
 									</tr>
 									<tr>
-										<td>LI28</td>
+										<th>LI28</th>
 										<td id="LI28XEmit">0.75 / 1.13</td>
 										<td id="LI28YEmit">0.72 / 1.04</td>
 									</tr>
 									<tr>
-										<td>LTU</td>
+										<th>LTU</th>
 										<td id="LTUXEmit">0.84 / 1.10</td>
 										<td id="LTUYEmit">0.82 / 1.15</td>
 									</tr>
@@ -177,25 +172,25 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L1S Phase</h5>
 							</div>
-							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479">-26.5&deg</span></h1>
+							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1">-26.5&deg</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L2 Phase</h5>
 							</div>
-							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487">-36.4&deg</span></h1>
+							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1">-36.4&deg</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L3 Phase</h5>
 							</div>
-							<h1><span id="L3Phase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO499">0.0&deg</span></h1>
+							<h1><span id="L3Phase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO499" data-units="&deg" data-precision="1">0.0&deg</span></h1>
 						</div>
-						<div class="span3">
+						<div class="span4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>Electron Destination</h5>
 							</div>
-							<h1><span id="ElectronDestination" class="PVmonitor" data-pv="CUD:MCC0:DESTINATION">Undulator</span></h1>
+							<h1><span id="ElectronDestination" class="PVmonitor" data-pv="CUD:MCC0:DESTINATION" data-units="">Undulator</span></h1>
 						</div>
 					</div>
 				</div>
@@ -208,7 +203,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>FEL Pulse Energy</h5>
 							</div>
-							<h1><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569">4.3 mJ</span></h1>
+							<h1><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569" data-precision="1">4.3 mJ</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -257,9 +252,9 @@
 			<div class="row">
 				<div class="span20">
 					<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-						<h4>Latest E-Log Entries</h4>
+						<h5>Latest E-Log Entry</h5>
 					</div>
-					<ul id="latestElogEntries" data-updatetime="1000">
+					<ul id="latestElogEntries" class="unstyled" data-updatetime="1000">
 					</ul>
 					<script>
 						setInterval(function(){
@@ -282,16 +277,6 @@
 										entries.enter().append("li").text(function(d) {return d.title}).classed("elogEntry",true);
 										entries.exit().remove();
 							});
-							/*
-							var entryList = d3.select("#latestElogEntries");
-							d3.json("http://mccelog.slac.stanford.edu/elog/dev/mgibbs/dev_elog_display_json.php", 
-									function(json){
-										console.log("Fetched entries from E-Log: ");
-										console.log(json);
-										var entries = entryList.selectAll(".elogEntry").data(json, function(d){return d.elogid});
-										entries.enter().append("li").text(function(d) {return d.title}).classed("elogEntry",true);
-										entries.exit().remove();
-							});*/
 						},10000);
 					</script>
 				</div>
@@ -302,38 +287,21 @@
 						<h1>24 Hour History</h1>
 					</div>
 					<script>
-						var context = cubism.context().step(1e3).size(1290);
+						var context = cubism.context().step(24*60*60*1000/1770).size(1770);
 						var fakedata = random("fakedata");
 						var morefake = random("morefake");
 						d3.select("#history").call(function(div) {
-							//div.selectAll(".horizon").data([fakedata, morefake]);
-							div.append("div").attr("class","axis").call(context.axis().orient("bottom"));
-							/*div.insert("div",".axis")
-								.attr("class","horizon")
-								.call(context.horizon()
-									.height(240)
-									.mode("mirror")
-									.title("Gas Detector")
-									.colors(["#3182bd", "#31a354"]));
-							div.insert("div",".axis")
-								.attr("class","horizon")
-								.call(context.horizon()
-									.height(120)
-									.mode("mirror")
-									.title("Peak Current")
-									.colors(["#3182bd", "#31a354"]));*/
-									
-							
+							div.append("div").attr("class","axis").call(context.axis().orient("bottom"));							
 							div.selectAll(".horizon")
 								.data([fakedata])
 								.enter().insert("div",".axis")
 								.attr("class","horizon")
 								.call(context.horizon()
 										.extent([-10, 10])
-										.height(320)
+										.height(150)
 										.mode("mirror")
 										.title("Gas Detector History")
-										.colors(["#3182bd", "#31a354"]));
+										.colors(["#3182bd", "#3182bd"]));
 						});
 					
 						function random(name) {
@@ -356,16 +324,40 @@
 						}	
 					</script>
 					<script>
-						function bindElementToPV(elem, PV, updateRate) {
+						function bindElementToPV(elem, PV, precision, updateRate) {
 							setInterval(function(){
-								d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV, function(json){
-									d3.select(elem).text(json["value"]);
+								d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
+									if(json["value"]!==undefined){
+										d3.select(elem).text(function(d,i) {
+											return json["value"] + " " + d.units;
+										});
+									}
 								});
 							},updateRate);
 						}
+						
 						d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
+							if(d.units==null) {
+								setTimeout(function(){
+									d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv + ".EGU", function(json){
+										if(json["value"]!==undefined){
+											d.units = json["value"];
+										} else {
+											d.units = "";
+										}
+
+									});
+								},Math.random()*3000);	
+							}
+							if(d.precision==null) {
+								d.precision = 0;
+							}
 							d3.select(this).text("?");
-							bindElementToPV(this, d.pv, d.updatetime ? d.updatetime : 10000);
+							//Randomize when these fire a little bit, so that we don't dump a bunch of requests on the server
+							//all at the exact same time.
+							setInterval(function(){
+								bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 10000);
+							},Math.random()*2000);
 						});
 					</script>
 				</div>

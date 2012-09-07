@@ -1,7 +1,7 @@
 var spawn = require("child_process").spawn;
 function test(response) {
 	console.log("Request handler 'Test' was called.");
-	response.writeHead(200,{"Content-Type": "text/plain"});
+	response.writeHead(200,{"Content-Type": "text/plain","Access-Control-Allow-Origin": "*"});
 	response.write("test");
 	response.end();
 }
@@ -9,11 +9,11 @@ function test(response) {
 function PV(response, query) {
 	var PVtoGet = query["PV"];
 	var precision = parseInt(query["precision"],10);
-	if (isNaN(precision) || precision == 0) {
-		precision = 2;
+	if (isNaN(precision)) {
+		precision = 0;
 	}
 	var data = {}
-	//console.log("Request handler 'PV' was called, with PV = " + PVtoGet + ".");
+	console.log("Request handler 'PV' was called, with PV = " + PVtoGet + ".");
 	
 	//Spawn a caget process.  This is more complicated than using childProcess.exec, but it is also more secure.
 	var stdoutdata = '', stderrdata = '';
@@ -28,11 +28,11 @@ function PV(response, query) {
 	});
 	
 	caget.on('exit', function(code){
-		if (code !== 0) {
+		if (code !== 0 ) {
 			//If there is a problem, return a 404, and print the error to the console.
 			console.log('Error executing caget - exited with code ' + code);
 			console.log('stderr = ' + stderrdata);
-			response.writeHead(404,{"Content-Type": "text/plain"});
+			response.writeHead(404,{"Content-Type": "text/plain","Access-Control-Allow-Origin": "*"});
 			response.write("Could not connect to PV.");
 		} else {
 			//Otherwise, process the result.
@@ -40,7 +40,10 @@ function PV(response, query) {
 
 			//Split the string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
 			var cagetResults = stdoutdata.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});
-			//console.log(cagetResults);
+			console.log(cagetResults);
+			if(stderrdata != ""){
+				console.log(stderrdata);
+			}
 			data = {"PV": cagetResults[0],
 					"value": cagetResults[3],
 			 		"timestamp": cagetResults[1] + " " + cagetResults[2],

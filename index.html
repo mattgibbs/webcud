@@ -168,23 +168,17 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="span2">
+						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L1S Phase</h5>
 							</div>
 							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1">-26.5&deg</span></h1>
 						</div>
-						<div class="span2">
+						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h5>L2 Phase</h5>
 							</div>
 							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1">-36.4&deg</span></h1>
-						</div>
-						<div class="span2">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h5>L3 Phase</h5>
-							</div>
-							<h1><span id="L3Phase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO499" data-units="&deg" data-precision="1">0.0&deg</span></h1>
 						</div>
 						<div class="span4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -248,39 +242,6 @@
 					</div>
 				</div>
 			</div>
-			
-			<div class="row">
-				<div class="span20">
-					<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-						<h5>Latest E-Log Entry</h5>
-					</div>
-					<ul id="latestElogEntries" class="unstyled" data-updatetime="1000">
-					</ul>
-					<script>
-						setInterval(function(){
-							var rightNow = new Date();
-							var oneHourAgo = new Date(rightNow - 60*60*1000);
-							var endHour = Math.ceil(rightNow.getHours() + rightNow.getMinutes()/60);
-							var startHour = Math.floor(oneHourAgo.getHours() + oneHourAgo.getMinutes()/60);
-							var entryList = d3.select("#latestElogEntries");
-							d3.json("http://mccelog.slac.stanford.edu/elog/dev/mgibbs/dev_elog_display_json.php?shift_field=NONE" + 
-									"&sd_Month=" + (oneHourAgo.getMonth()+1) + 
-									"&sd_Day=" + oneHourAgo.getDate() + 
-									"&sd_Year=" + oneHourAgo.getFullYear() + 
-									"&sd_Hour=" + startHour + 
-									"&ed_Month=" + (rightNow.getMonth()+1) +
-									"&ed_Day=" + rightNow.getDate() +
-									"&ed_Year="+ rightNow.getFullYear() +
-									"&ed_Hour=" + endHour, 
-									function(json){
-										var entries = entryList.selectAll(".elogEntry").data(json, function(d){return d.elogid});
-										entries.enter().append("li").text(function(d) {return d.title}).classed("elogEntry",true);
-										entries.exit().remove();
-							});
-						},10000);
-					</script>
-				</div>
-			</div>
 			<div class="row"><!-- graph row begin -->
 				<div class="span20" id="history">
 					<div class="page-header">
@@ -325,6 +286,10 @@
 					</script>
 					<script>
 						function bindElementToPV(elem, PV, precision, updateRate) {
+							//Enforce a maximum update rate of 1 Hz.
+							if(updateRate < 1000){
+								updateRate = 1000;
+							}
 							setInterval(function(){
 								d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
 									if(json["value"]!==undefined){
@@ -345,7 +310,6 @@
 										} else {
 											d.units = "";
 										}
-
 									});
 								},Math.random()*3000);	
 							}
@@ -353,10 +317,11 @@
 								d.precision = 0;
 							}
 							d3.select(this).text("?");
+							var elem = this; //We need to save 'this' because setTimeout will stomp all over it below.
 							//Randomize when these fire a little bit, so that we don't dump a bunch of requests on the server
 							//all at the exact same time.
-							setInterval(function(){
-								bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 10000);
+							setTimeout(function(){
+								bindElementToPV(elem, d.pv, d.precision, d.updatetime ? d.updatetime : 10000);
 							},Math.random()*2000);
 						});
 					</script>

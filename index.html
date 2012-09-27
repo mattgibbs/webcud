@@ -135,23 +135,23 @@
 								<tbody>
 									<tr>
 										<th>OTR-2</th>
-										<td id="OTR2XEmit">0.40 / 1.03</td>
-										<td id="OTR2YEmit">0.39 / 1.05</td>
+										<td><span id="OTR2XEmit" class="PVmonitor" data-pv="OTRS:IN20:571:EMITN_X" data-precision="2" data-units=""></span> / <span id="OTR2XMatch" class="PVmonitor" data-pv="OTRS:IN20:571:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="OTR2YEmit" class="PVmonitor" data-pv="OTRS:IN20:571:EMITN_Y" data-precision="2" data-units=""></span> / <span id="OTR2YMatch" class="PVmonitor" data-pv="OTRS:IN20:571:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>WS12</th>
-										<td id="WS12XEmit">0.63 / 1.00</td>
-										<td id="WS12YEmit">0.60 / 1.02</td>
+										<td><span id="WS12XEmit" class="PVmonitor" data-pv="WIRE:LI21:293:EMITN_X" data-precision="2" data-units=""></span> / <span id="WS12XMatch" class="PVmonitor" data-pv="WIRE:LI21:293:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="WS12YEmit" class="PVmonitor" data-pv="WIRE:LI21:293:EMITN_Y" data-precision="2" data-units=""></span> / <span id="WS12YMatch" class="PVmonitor" data-pv="WIRE:LI21:293:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>LI28</th>
-										<td id="LI28XEmit">0.75 / 1.13</td>
-										<td id="LI28YEmit">0.72 / 1.04</td>
+										<td><span id="LI28XEmit" class="PVmonitor" data-pv="WIRE:LI28:144:EMITN_X" data-precision="2" data-units=""></span> / <span id="LI28XMatch" class="PVmonitor" data-pv="WIRE:LI28:144:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="LI28YEmit" class="PVmonitor" data-pv="WIRE:LI28:144:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LI28YMatch" class="PVmonitor" data-pv="WIRE:LI28:144:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>LTU</th>
-										<td id="LTUXEmit">0.84 / 1.10</td>
-										<td id="LTUYEmit">0.82 / 1.15</td>
+										<td><span id="LTUXEmit" class="PVmonitor" data-pv="WIRE:LTU1:735:EMITN_X" data-precision="2" data-units=""></span> / <span id="LTUXMatch" class="PVmonitor" data-pv="WIRE:LTU1:735:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="LTUYEmit" class="PVmonitor" data-pv="WIRE:LTU1:735:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LTUYMatch" class="PVmonitor" data-pv="WIRE:LTU1:735:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -252,7 +252,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="row"><!-- graph row begin -->
+			<div class="row" style="display:none"><!-- graph row begin -->
 				<div class="span20" id="history">
 					<div class="page-header">
 						<h1>24 Hour History</h1>
@@ -314,14 +314,14 @@
 						d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
 							if(d.units==null) {
 								setTimeout(function(){
-									d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv + ".EGU", function(json){
+									d3.json("http://lcls-prod02.slac.stanford.edu:8888/caget?PV=" + d.pv + ".EGU", function(json){
 										if(json["value"]!==undefined){
 											d.units = json["value"];
 										} else {
 											d.units = "";
 										}
 									});
-								},Math.random()*3000);	
+								},Math.random()*0);	
 							}
 							if(d.precision==null) {
 								d.precision = 0;
@@ -332,7 +332,7 @@
 							//all at the exact same time.
 							setTimeout(function(){
 								bindElementToPV(elem, d.pv, d.precision, d.updatetime ? d.updatetime : 10000);
-							},Math.random()*2000);
+							},Math.random()*0);
 						});
 					</script>
 				</div>

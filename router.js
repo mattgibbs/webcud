@@ -3,7 +3,7 @@ function route(handle, pathname, query, response) {
 	if (typeof handle[pathname] === 'function') {
 		handle[pathname](response, query);
 	} else {
-		console.log("No request handler found for " + pathname);
+		//console.log("No request handler found for " + pathname);
 		response.writeHead(404,{"Content-Type": "text/plain","Access-Control-Allow-Origin": "*"});
 		response.write("404 Not found");
 		response.end();

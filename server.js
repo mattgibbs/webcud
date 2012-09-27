@@ -6,7 +6,6 @@ function start(route, handle) {
 		var parsedURL = url.parse(request.url,true);
 		var pathname = parsedURL.pathname;
 		var query = parsedURL.query;
-		console.log("Request for " + pathname + " recieved.");
 		route(handle, pathname, query, response);
 	}
 	

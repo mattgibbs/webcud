@@ -135,23 +135,23 @@
 								<tbody>
 									<tr>
 										<th>OTR-2</th>
-										<td><span id="OTR2XEmit" class="PVmonitor" data-pv="OTRS:IN20:571:EMITN_X" data-precision="2" data-units=""></span> / <span id="OTR2XMatch" class="PVmonitor" data-pv="OTRS:IN20:571:BMAG_X" data-precision="2" data-units=""></span></td>
-										<td><span id="OTR2YEmit" class="PVmonitor" data-pv="OTRS:IN20:571:EMITN_Y" data-precision="2" data-units=""></span> / <span id="OTR2YMatch" class="PVmonitor" data-pv="OTRS:IN20:571:BMAG_Y" data-precision="2" data-units=""></span></td>
+										<td><span id="OTR2XEmit" class="PVmonitor emittanceValue" data-pv="OTRS:IN20:571:EMITN_X" data-precision="2" data-units=""></span> / <span id="OTR2XMatch" class="PVmonitor matchingValue" data-pv="OTRS:IN20:571:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="OTR2YEmit" class="PVmonitor emittanceValue" data-pv="OTRS:IN20:571:EMITN_Y" data-precision="2" data-units=""></span> / <span id="OTR2YMatch" class="PVmonitor matchingValue" data-pv="OTRS:IN20:571:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>WS12</th>
-										<td><span id="WS12XEmit" class="PVmonitor" data-pv="WIRE:LI21:293:EMITN_X" data-precision="2" data-units=""></span> / <span id="WS12XMatch" class="PVmonitor" data-pv="WIRE:LI21:293:BMAG_X" data-precision="2" data-units=""></span></td>
-										<td><span id="WS12YEmit" class="PVmonitor" data-pv="WIRE:LI21:293:EMITN_Y" data-precision="2" data-units=""></span> / <span id="WS12YMatch" class="PVmonitor" data-pv="WIRE:LI21:293:BMAG_Y" data-precision="2" data-units=""></span></td>
+										<td><span id="WS12XEmit" class="PVmonitor emittanceValue" data-pv="WIRE:LI21:293:EMITN_X" data-precision="2" data-units=""></span> / <span id="WS12XMatch" class="PVmonitor matchingValue" data-pv="WIRE:LI21:293:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="WS12YEmit" class="PVmonitor emittanceValue" data-pv="WIRE:LI21:293:EMITN_Y" data-precision="2" data-units=""></span> / <span id="WS12YMatch" class="PVmonitor matchingValue" data-pv="WIRE:LI21:293:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>LI28</th>
-										<td><span id="LI28XEmit" class="PVmonitor" data-pv="WIRE:LI28:144:EMITN_X" data-precision="2" data-units=""></span> / <span id="LI28XMatch" class="PVmonitor" data-pv="WIRE:LI28:144:BMAG_X" data-precision="2" data-units=""></span></td>
-										<td><span id="LI28YEmit" class="PVmonitor" data-pv="WIRE:LI28:144:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LI28YMatch" class="PVmonitor" data-pv="WIRE:LI28:144:BMAG_Y" data-precision="2" data-units=""></span></td>
+										<td><span id="LI28XEmit" class="PVmonitor emittanceValue" data-pv="WIRE:LI28:144:EMITN_X" data-precision="2" data-units=""></span> / <span id="LI28XMatch" class="PVmonitor matchingValue" data-pv="WIRE:LI28:144:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="LI28YEmit" class="PVmonitor emittanceValue" data-pv="WIRE:LI28:144:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LI28YMatch" class="PVmonitor matchingValue" data-pv="WIRE:LI28:144:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>LTU</th>
-										<td><span id="LTUXEmit" class="PVmonitor" data-pv="WIRE:LTU1:735:EMITN_X" data-precision="2" data-units=""></span> / <span id="LTUXMatch" class="PVmonitor" data-pv="WIRE:LTU1:735:BMAG_X" data-precision="2" data-units=""></span></td>
-										<td><span id="LTUYEmit" class="PVmonitor" data-pv="WIRE:LTU1:735:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LTUYMatch" class="PVmonitor" data-pv="WIRE:LTU1:735:BMAG_Y" data-precision="2" data-units=""></span></td>
+										<td><span id="LTUXEmit" class="PVmonitor emittanceValue" data-pv="WIRE:LTU1:735:EMITN_X" data-precision="2" data-units=""></span> / <span id="LTUXMatch" class="PVmonitor matchingValue" data-pv="WIRE:LTU1:735:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="LTUYEmit" class="PVmonitor emittanceValue" data-pv="WIRE:LTU1:735:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LTUYMatch" class="PVmonitor matchingValue" data-pv="WIRE:LTU1:735:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -311,6 +311,7 @@
 							},updateRate);
 						}
 						
+						//Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
 						d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
 							if(d.units==null) {
 								setTimeout(function(){
@@ -321,19 +322,16 @@
 											d.units = "";
 										}
 									});
-								},Math.random()*0);	
+								},Math.random()*500);	//Give this some random delay so all the cagets don't hit the server at the same time.
 							}
 							if(d.precision==null) {
 								d.precision = 0;
 							}
 							d3.select(this).text("?");
-							var elem = this; //We need to save 'this' because setTimeout will stomp all over it below.
-							//Randomize when these fire a little bit, so that we don't dump a bunch of requests on the server
-							//all at the exact same time.
-							setTimeout(function(){
-								bindElementToPV(elem, d.pv, d.precision, d.updatetime ? d.updatetime : 10000);
-							},Math.random()*0);
+							bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 3000);
 						});
+						
+						
 					</script>
 				</div>
 			</div><!-- graph row end -->	

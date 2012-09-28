@@ -115,7 +115,7 @@ function PV(response, query) {
 			//camonitor is stupid, and doesn't output errors about not finding PVs to stderr, and doesn't exit.
 			//So, we have to look at the stdout to determine if the connection to the PV was successful.
 			var camonitorString = data.toString('ascii');
-			/*if (camonitorString.indexOf("(PV not found)") != -1) {
+			if (camonitorString.indexOf("(PV not found)") != -1) {
 				response.writeHead(404,{"Content-Type": "text/plain","Access-Control-Allow-Origin": "*"});
 				response.write("Could not connect to PV.");
 				console.log("Error for " + PVtoGet + ": " + data);
@@ -123,7 +123,7 @@ function PV(response, query) {
 				clearTimeout(camonitor.killTimer)
 				camonitor.kill()
 				return;
-			}*/
+			}
 
 			//Split the data string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
 			var resultArray = camonitorString.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});

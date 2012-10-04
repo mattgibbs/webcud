@@ -6,91 +6,9 @@
 		<title>LCLS Status</title>
 		<meta name="author" content="Matt Gibbs">
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="cud.css" rel="stylesheet">
 		<script src="d3/d3.v2.min.js"></script>
 		<script src="d3/cubism.v1.min.js"></script>
-		<style>
-
-
-		.group {
-		  margin-bottom: 1em;
-		}
-
-		.axis {
-		  font: 10px sans-serif;
-		  z-index: 2;
-		}
-
-		.axis text {
-		  stroke: #FFF;
-		}
-
-		.axis path {
-		  display: none;
-		}
-
-		.axis line {
-		  stroke: #FFF;
-		  shape-rendering: crispEdges;
-		}
-
-		.axis.bottom {
-		  color: white;
-		  bottom: 0px;
-		  padding: 24px 0 0 0;
-		}
-
-		.horizon {
-		  border-bottom: solid 1px #333;
-		  overflow: hidden;
-		  position: relative;
-		}
-
-		.horizon {
-		  border-top: solid 1px #333;
-		  border-bottom: solid 1px #FFF;
-		}
-
-		.horizon + .horizon {
-		  border-top: none;
-		}
-
-		.horizon canvas {
-		  display: block;
-		}
-
-		.horizon .title,
-		.horizon .value {
-		  font-weight: bold;
-		  text-rendering: optimizelegibility;
-		  bottom: 0;
-		  line-height: 30px;
-		  margin: 0 6px;
-		  position: absolute;
-		  white-space: nowrap;
-		}
-
-		.horizon .title {
-		  left: 0;
-		}
-
-		.horizon .value {
-		  right: 0;
-		}
-
-		.line {
-		  background: #FFF;
-		  z-index: 2;
-		}
-		
-		li.elogEntry {
-			display: inline;
-			font-size: 24px;
-			line-height: 40px;
-			font-weight: bold;
-			text-rendering: optimizelegibility;
-		}
-		
-		</style>
 	</head>
 	<body>
 		<div class="container">
@@ -294,48 +212,9 @@
 							}, name);
 						}	
 					</script>
-					<script>
-						function bindElementToPV(elem, PV, precision, updateRate) {
-							//Enforce a maximum update rate of 1 Hz.
-							if(updateRate < 1000){
-								updateRate = 1000;
-							}
-							setInterval(function(){
-								d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
-									if(json["value"]!==undefined){
-										d3.select(elem).text(function(d,i) {
-											return json["value"] + " " + d.units;
-										});
-									}
-								});
-							},updateRate);
-						}
-						
-						//Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
-						d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
-							if(d.units==null) {
-								setTimeout(function(){
-									d3.json("http://lcls-prod02.slac.stanford.edu:8888/caget?PV=" + d.pv + ".EGU", function(json){
-										if(json["value"]!==undefined){
-											d.units = json["value"];
-										} else {
-											d.units = "";
-										}
-									});
-								},Math.random()*500);	//Give this some random delay so all the cagets don't hit the server at the same time.
-							}
-							if(d.precision==null) {
-								d.precision = 0;
-							}
-							d3.select(this).text("?");
-							bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 3000);
-						});
-						
-						
-					</script>
 				</div>
 			</div><!-- graph row end -->	
 		</div><!-- container end -->
-		<!--<script src="bootstrap/js/bootstrap.min.js"></script>-->
 	</body>
+	<script src="webPV.js"></script>
 </html>

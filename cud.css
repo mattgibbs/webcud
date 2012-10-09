@@ -76,3 +76,18 @@ li.elogEntry {
 	font-weight: bold;
 	text-rendering: optimizelegibility;
 }
+
+.emittanceValue, .matchingValue{
+	/*font-weight: bold;*/
+}
+
+#emittanceTable th {
+	font-size: 18px;
+	line-height: 20px;
+}
+
+#emittanceTable td {
+	font-size: 36px;
+	line-height: 40px;
+	font-weight: bold;
+}

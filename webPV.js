@@ -61,6 +61,19 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 	},d.updatetime);
 });
 
+
+setInterval(function(){
+	d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=SIOC:SYS0:ML00:CALC998", function(json){
+		d3.select('#amplificationMode').text(function() { 
+				if(json["value"] == "0") {
+					return "Seeded";
+				} else {
+					return "SASE";
+				}
+			});
+	});
+},3000);
+
 function bindElementToPV(elem, PV, precision, updateRate) {
 	//Enforce a maximum update rate of 1 Hz.
 	if(updateRate < 1000){

@@ -1,21 +1,10 @@
 //Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
 d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
-	if(d.units==null) {
-		setTimeout(function(){
-			d3.json("http://lcls-prod02.slac.stanford.edu:8888/caget?PV=" + d.pv + ".EGU", function(json){
-				if(json["value"]!==undefined){
-					d.units = json["value"];
-				} else {
-					d.units = "";
-				}
-			});
-		},Math.random()*1000);	//Give this some random delay so all the cagets don't hit the server at the same time.
-	}
 	if(d.precision==null) {
 		d.precision = 0;
 	}
 	d3.select(this).text("?");
-	bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 3000);
+	bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
 });
 
 
@@ -26,7 +15,8 @@ var emittanceColorScale = d3.scale.quantile()
 
 var ageOpacityScale = d3.scale.linear()
 						.domain([0, 4*60*60*1000])
-						.range([1, 0.2]);
+						.range([1, 0.3])
+						.clamp(true);
 							
 d3.selectAll(".emittanceValue").datum(function() { return this.dataset; }).each(function(d) {
 	var elem = this;
@@ -36,17 +26,12 @@ d3.selectAll(".emittanceValue").datum(function() { return this.dataset; }).each(
 	setInterval(function(){
 		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv + "&precision=" + d.precision, function(json){
 			d3.select(elem).datum(function(d){
-					if (d.value != json["value"]) {
-						d.timestamp = new Date().getTime();
-					}
-					
+					d.timestamp = json["timestamp"];
 					d.value = json["value"];
 					return d;
 			 })
 				.text(function(d,i) { return d.value; })
 				.style("opacity",ageOpacityScale(Number(new Date()) - d.timestamp))
-				.transition()
-				.duration(500)
 				.style("color",emittanceColorScale(json["value"]));
 				
 		});
@@ -65,17 +50,12 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 	setInterval(function(){
 		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv + "&precision=" + d.precision, function(json){
 			d3.select(elem).datum(function(d){
-					if(d.value != json["value"]) {
-						d.timestamp = new Date().getTime();
-					}
-				
+					d.timestamp = json["timestamp"];
 					d.value = json["value"];
 					return d;
 				})
 				.text(function(d,i) { return d.value; })
 				.style("opacity",ageOpacityScale(Number(new Date()) - d.timestamp))
-				.transition()
-				.duration(500)
 				.style("color",matchingColorScale(json["value"]));
 		});
 	},d.updatetime);
@@ -89,7 +69,14 @@ function bindElementToPV(elem, PV, precision, updateRate) {
 	setInterval(function(){
 		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
 			if(json["value"]!==undefined){
-				d3.select(elem).datum(function(d){ d.value = json["value"]; return d; }).text(function(d,i) {
+				d3.select(elem).datum(function(d){
+					d.value = json["value"];
+					if (d.units === undefined) {
+						d.units = json["units"];
+					}
+					return d;
+				})
+				.text(function(d,i) {
 					return d.value + " " + d.units;
 				});
 			}

@@ -14,7 +14,7 @@ var emittanceColorScale = d3.scale.quantile()
 							.range(["#00CC22", "#FFFF00", "#FF4000"]);
 
 var ageOpacityScale = d3.scale.linear()
-						.domain([0, 4*60*60*1000])
+						.domain([0, 16*60*60*1000]) //Make the values fade to 30% after 16 hours.
 						.range([1, 0.3])
 						.clamp(true);
 							

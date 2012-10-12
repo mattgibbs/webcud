@@ -61,7 +61,7 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 	},d.updatetime);
 });
 
-
+/*
 setInterval(function(){
 	d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=SIOC:SYS0:ML00:CALC998", function(json){
 		d3.select('#amplificationMode').text(function() { 
@@ -73,24 +73,48 @@ setInterval(function(){
 			});
 	});
 },3000);
+*/
 
-function bindElementToPV(elem, PV, precision, updateRate) {
+bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(val){
+	if (val == "0") {
+		return "Seeded";
+	} else {
+		return "SASE";
+	}
+});
+
+function bindElementToPV(elem, PV, precision, updateRate, processor) {
 	//Enforce a maximum update rate of 1 Hz.
 	if(updateRate < 1000){
 		updateRate = 1000;
+	}
+	
+	if (processor === undefined) {
+		processor = function(d) {
+			return d;
+		}
 	}
 	setInterval(function(){
 		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
 			if(json["value"]!==undefined){
 				d3.select(elem).datum(function(d){
-					d.value = json["value"];
+					if (d === undefined) { d = {}; };
+					d.value = processor(json["value"]);
 					if (d.units === undefined) {
-						d.units = json["units"];
+						if (json["units"] === undefined) {
+							d.units = "";
+						} else {
+							d.units = json["units"];
+						}
 					}
 					return d;
 				})
 				.text(function(d,i) {
-					return d.value + " " + d.units;
+					if (d.units == "") {
+						return d.value;
+					} else {
+						return d.value + " " + d.units;
+					}
 				});
 			}
 		});

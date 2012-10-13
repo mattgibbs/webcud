@@ -1,6 +1,6 @@
 var http = require("http");
 var url = require("url");
-var socketHandler = require("./requestHandlers").socketConnection;
+var socketConnection = require("./requestHandlers").socketConnection;
 
 function start(route, handle) {
 	function onRequest(request, response) {
@@ -13,7 +13,7 @@ function start(route, handle) {
 	
 	//Set up Socket.IO for websockets support.
 	var io = require('socket.io').listen(pvserver);
-	io.sockets.on('connection', socketHandler);
+	io.sockets.on('connection', socketConnection);
 }
 
 

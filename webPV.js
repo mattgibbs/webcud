@@ -1,13 +1,38 @@
+var socket = io.connect('http://lcls-prod02.slac.stanford.edu:8888');
+
 //Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
 d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
 	if(d.precision==null) {
 		d.precision = 0;
 	}
 	d3.select(this).text("?");
-	bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
+	var elem = this;
+	socket.emit('connectToPV',d);
+	socket.on(d.pv,function(data) {
+		d3.select(elem).datum(function(d){
+			if (d === undefined) { d = {}; };
+			d.value = data.value;
+			if (d.units === undefined) {
+				if (data.units === undefined) {
+					d.units = "";
+				} else {
+					d.units = data.units;
+				}
+			}
+			return d;
+		})
+		.text(function(d,i) {
+			if (d.units == "") {
+				return d.value;
+			} else {
+				return d.value + " " + d.units;
+			}
+		});
+	});
+	//bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
 });
 
-
+/*
 //Code for the emittance numbers is specialized so that the colors change.
 var emittanceColorScale = d3.scale.quantile()
 							.domain([0, 3])
@@ -60,7 +85,7 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 		});
 	},d.updatetime);
 });
-
+*/
 /*
 setInterval(function(){
 	d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=SIOC:SYS0:ML00:CALC998", function(json){
@@ -74,7 +99,7 @@ setInterval(function(){
 	});
 },3000);
 */
-
+/*
 bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(val){
 	if (val == "0") {
 		return "Seeded";
@@ -120,3 +145,4 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 		});
 	},updateRate);
 }
+*/

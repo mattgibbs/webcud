@@ -110,6 +110,8 @@ function PV(response, query) {
 			dataCache[resultArray[0]].timestamp = dateFromEPICSTimestamp(resultArray[1],resultArray[2]);
 			dataCache[resultArray[0]].status = resultArray[4];
 			dataCache[resultArray[0]].severity = resultArray[5];
+			//Emit an event signalling that the latest data has been parsed and cached.
+			camonitor.emit('cached');
 			
 			//Get the units for this PV.
 			var stdoutdata = '', stderrdata = '';
@@ -165,6 +167,9 @@ function PV(response, query) {
 			dataCache[resultArray[0]].timestamp = dateFromEPICSTimestamp(resultArray[1],resultArray[2]);
 			dataCache[resultArray[0]].status = resultArray[4];
 			dataCache[resultArray[0]].severity = resultArray[5];
+			
+			//Emit an event signalling that the latest data has been parsed and cached.
+			camonitor.emit('cached');
 		});
 		
 		
@@ -212,6 +217,132 @@ function PV(response, query) {
 	});*/
 }
 
+function socketConnection(socket) {
+	//When the server recieves a 'connectToPV' message,
+	//it checks if a camonitor already exists for this PV.  If it does exists,
+	//add a listener to the camonitor's 'data' event which will emit the PV data on an event named after the PV.
+	//If a camonitor does not exist yet, spawn one and add the listeners.
+	socket.setMaxListeners(50);
+	socket.on('connectToPV',function (connectData) {
+		PVtoGet = connectData.pv;
+		precision = connectData.precision;
+		var camonitor;
+		var socketListener;
+		if(monitorProcesses[PVtoGet] === undefined){		
+			//This connection doesn't exist yet, spawn it.
+			console.log("Opening new connection to " + PVtoGet + " via Socket.io request.");
+			camonitor = spawn("camonitor", ["-f"+precision,PVtoGet]);
+			camonitor.stdout.setMaxListeners(50);
+			camonitor.stderr.setMaxListeners(50);
+
+			//Kill this after half a minute of inactivity.
+			camonitor.killTimer = setTimeout(function(){
+				if(monitorProcesses[PVtoGet].connections == 0) {
+					console.log("Ending inactive connection to " + PVtoGet);
+					monitorProcesses[PVtoGet].kill();
+				} else {
+					monitorProcesses[PVtoGet].timedOut = true;
+				}
+			},30*1000);
+			camonitor.timedOut = false;
+			camonitor.connections = 0;
+			
+			
+			//Get the units for this PV.
+			var stdoutdata = '', stderrdata = '';
+			var caget = spawn("caget", ["-a",PVtoGet+".EGU"]);
+			
+			dataCache[PVtoGet] = {};
+			
+			caget.stdout.on('data', function(data){
+				stdoutdata += data;
+			});
+
+			caget.stderr.on('data', function(data){
+				stderrdata += data;
+			});
+
+			caget.on('exit', function(code){
+				if (code !== 0 ) {
+					//If there is a problem, no big deal, you just don't get a unit.
+					console.log(stderrdata);
+				} else {
+					//Split the string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
+					var cagetResults = stdoutdata.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});
+
+					if(stderrdata != ""){
+						console.log(stderrdata);
+					}
+					
+					if(cagetResults[3] !== undefined) {
+						console.log("Assigning units for " + cagetResults);
+						dataCache[PVtoGet].units = cagetResults[3];
+					}
+					
+				}
+			});
+
+			//Update the dataCache any time this PV connection recieves new data.
+			camonitor.stdout.on('data', function(data){
+				//Check for channel access connection errors
+				var camonitorString = data.toString('ascii');
+				if (camonitorString.indexOf("(PV not found)") != -1) {
+					response.writeHead(404,{"Content-Type": "text/plain","Access-Control-Allow-Origin": "*"});
+					response.write("Could not connect to PV.");
+					console.log("Error for " + PVtoGet + ": " + data);
+					response.end();
+					clearTimeout(camonitor.killTimer)
+					camonitor.kill()
+					return;
+				}
+
+				//Split the data string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
+				var resultArray = camonitorString.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});
+
+				dataCache[resultArray[0]].PV = resultArray[0]; //I am using the result of the CA connection to determine the PV as a sort of check that it all worked right.
+				dataCache[resultArray[0]].value = resultArray[3];
+				dataCache[resultArray[0]].timestamp = dateFromEPICSTimestamp(resultArray[1],resultArray[2]);
+				dataCache[resultArray[0]].status = resultArray[4];
+				dataCache[resultArray[0]].severity = resultArray[5];
+				
+				//Emit an event signalling that the latest data has been parsed and cached.
+				camonitor.emit('cached',dataCache[resultArray[0]]);
+			});
+
+
+			//Clean up when this process ends.
+			camonitor.on('exit', function(code){
+				console.log("Connection to " + PVtoGet + " ended.");
+				delete monitorProcesses[PVtoGet];
+				delete dataCache[PVtoGet];
+			});
+
+			//Add it to our collection of camonitors.
+			monitorProcesses[PVtoGet] = camonitor;
+		} else {
+			//There is already a connection to this PV.
+			camonitor = monitorProcesses[PVtoGet];
+		}
+		
+		//Add a listener for this socket.  Use the data we just put into the cache to avoid re-parsing it.
+		var socketListener = function(data) {
+			socket.emit(data.PV,data);
+		}
+		
+		camonitor.on('cached',socketListener);
+		camonitor.connections += 1;
+		
+		socket.on('disconnect', function (){
+			camonitor.removeListener('cached',socketListener);
+			camonitor.connections -= 1;
+			if (camonitor.connections <= 0 && camonitor.timedOut == true) {
+				console.log("Ending inactive connection to " + PVtoGet);
+				camonitor.kill();
+			}
+		})
+	});
+}
+
 function dateFromEPICSTimestamp(datestring,timestring) {
 	//Parse the date string into something we can plug into a javascript Date constructor.
 	var year = parseInt(datestring.substring(0,4),10);
@@ -230,3 +361,4 @@ function dateFromEPICSTimestamp(datestring,timestring) {
 exports.PV = PV;
 exports.caget = caget;
 exports.test = test;
+exports.socketConnection = socketConnection;

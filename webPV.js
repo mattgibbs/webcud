@@ -11,18 +11,21 @@ d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(funct
 	socket.on(d.pv,function(data) {
 		d3.select(elem).datum(function(d){
 			if (d === undefined) { d = {}; };
-			d.value = data.value;
+			if (typeof data.value === 'number') {
+				d.value = data.value.toFixed(d.precision);
+			} else {
+				d.value = data.value;
+			}
+			
 			if (d.units === undefined) {
-				if (data.units === undefined) {
-					d.units = "";
-				} else {
+				if (data.units !== undefined) {
 					d.units = data.units;
 				}
 			}
 			return d;
 		})
 		.text(function(d,i) {
-			if (d.units == "") {
+			if (d.units === undefined) {
 				return d.value;
 			} else {
 				return d.value + " " + d.units;

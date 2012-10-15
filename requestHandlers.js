@@ -67,7 +67,7 @@ function socketConnection(socket) {
 			var camonitor = monitors[PVtoGet];
 			camonitor.addSocketConnection();
 			camonitor.on('cached',function(dataCache){
-				socket.emit(dataCache.PV,dataCache);
+				socket.volatile.emit(dataCache.PV,dataCache);
 			});
 			socket.on('disconnect', function (){
 				console.log("Socket disconnected.  Removing connection to " + camonitor.PV);

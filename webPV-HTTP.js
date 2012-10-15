@@ -24,10 +24,14 @@ d3.selectAll(".emittanceValue").datum(function() { return this.dataset; }).each(
 		d.updatetime = 3000;
 	}
 	setInterval(function(){
-		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv + "&precision=" + d.precision, function(json){
+		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv, function(json){
 			d3.select(elem).datum(function(d){
 					d.timestamp = json["timestamp"];
-					d.value = json["value"];
+					if (typeof json.value === 'number') {
+						d.value = json.value.toFixed(d.precision);
+					} else {
+						d.value = json.value;
+					}
 					return d;
 			 })
 				.text(function(d,i) { return d.value; })
@@ -48,10 +52,14 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 		d.updatetime = 3000;
 	}
 	setInterval(function(){
-		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv + "&precision=" + d.precision, function(json){
+		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv, function(json){
 			d3.select(elem).datum(function(d){
 					d.timestamp = json["timestamp"];
-					d.value = json["value"];
+					if (typeof json.value === 'number') {
+						d.value = json.value.toFixed(d.precision);
+					} else {
+						d.value = json.value;
+					}
 					return d;
 				})
 				.text(function(d,i) { return d.value; })
@@ -60,20 +68,6 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 		});
 	},d.updatetime);
 });
-
-/*
-setInterval(function(){
-	d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=SIOC:SYS0:ML00:CALC998", function(json){
-		d3.select('#amplificationMode').text(function() { 
-				if(json["value"] == "0") {
-					return "Seeded";
-				} else {
-					return "SASE";
-				}
-			});
-	});
-},3000);
-*/
 
 bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(val){
 	if (val == "0") {
@@ -94,11 +88,13 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 			return d;
 		}
 	}
+	
 	setInterval(function(){
-		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
+		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV, function(json){
 			if(json.value!==undefined){
 				d3.select(elem).datum(function(d){
 					if (d === undefined) { d = {}; };
+					json.value = processor(json.value);
 					if (typeof json.value === 'number') {
 						d.value = json.value.toFixed(d.precision);
 					} else {

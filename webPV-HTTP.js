@@ -96,21 +96,24 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 	}
 	setInterval(function(){
 		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV + "&precision=" + precision, function(json){
-			if(json["value"]!==undefined){
+			if(json.value!==undefined){
 				d3.select(elem).datum(function(d){
 					if (d === undefined) { d = {}; };
-					d.value = processor(json["value"]);
+					if (typeof json.value === 'number') {
+						d.value = json.value.toFixed(d.precision);
+					} else {
+						d.value = json.value;
+					}
+
 					if (d.units === undefined) {
-						if (json["units"] === undefined) {
-							d.units = "";
-						} else {
-							d.units = json["units"];
+						if (json.units !== undefined) {
+							d.units = json.units;
 						}
 					}
 					return d;
 				})
 				.text(function(d,i) {
-					if (d.units == "") {
+					if (d.units === undefined) {
 						return d.value;
 					} else {
 						return d.value + " " + d.units;

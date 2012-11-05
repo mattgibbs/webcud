@@ -92,3 +92,8 @@ li.elogEntry {
 	line-height: 40px;
 	font-weight: bold;
 }
+
+h1.bigfont {
+	font-size: 45px;
+	line-height: 50px;
+}

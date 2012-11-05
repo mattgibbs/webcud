@@ -5,6 +5,6 @@ var requestHandlers = require("./requestHandlers");
 var handle = {}
 handle["/"] = requestHandlers.test;
 handle["/PV"] = requestHandlers.PV;
-handle["/caget"] = requestHandlers.caget;
+handle["/history"] = requestHandlers.history;
 
 server.start(router.route, handle);

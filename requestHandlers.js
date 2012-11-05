@@ -1,5 +1,8 @@
 var spawn = require("child_process").spawn;
-var util = require("util");
+var fork = require("child_process").fork;
+//var util = require("util");
+var http = require("http");
+//var saxStream = require("./sax").createStream();
 var monitors = {};
 
 //HTTP GET request for a PV.
@@ -56,7 +59,7 @@ function socketConnection(socket) {
 			spawnNewMonitor(PVtoGet,function(newMonitor){
 				newMonitor.addSocketConnection();
 				newMonitor.on('cached',function(dataCache){
-					socket.volatile.emit(dataCache.PV,dataCache);
+					socket.emit(dataCache.PV,dataCache);
 				});
 				socket.on('disconnect', function (){
 					console.log("Socket disconnected.  Removing connection to " + newMonitor.PV);
@@ -67,7 +70,7 @@ function socketConnection(socket) {
 			var camonitor = monitors[PVtoGet];
 			camonitor.addSocketConnection();
 			camonitor.on('cached',function(dataCache){
-				socket.volatile.emit(dataCache.PV,dataCache);
+				socket.emit(dataCache.PV,dataCache);
 			});
 			socket.on('disconnect', function (){
 				console.log("Socket disconnected.  Removing connection to " + camonitor.PV);
@@ -80,14 +83,14 @@ function socketConnection(socket) {
 function spawnNewMonitor(PV, callback){
 	//First, get the units for this PV.
 	var stdoutdata = '', stderrdata = '';
-	var caget = spawn("caget", ["-a",PV+".EGU"]);
+	var caget = spawn("camonitor", [PV+".EGU"]);
 	var camonitor;
-	caget.stdout.on('data', function(data){ stdoutdata += data; });
-	caget.stderr.on('data', function(data){ stderrdata += data; });
+	caget.stdout.on('data', function(data){ stdoutdata += data; caget.kill(); });
+	caget.stderr.on('data', function(data){ stderrdata += data; caget.kill(); });
 
 	caget.on('exit', function(code){
 		var units;
-		if (code !== 0 ) {
+		if (stderrdata !== "" ) {
 			//If there is a problem, no big deal, you just don't get a unit.
 			console.log("Error finding units. Caget exited with code " + code + ": " + stderrdata);
 		} else {
@@ -109,6 +112,8 @@ function spawnNewMonitor(PV, callback){
 		camonitor.dataCache.units = units;
 		camonitor.timedOut = false;
 		camonitor.socketConnections = 0;
+		camonitor.accumulating = false;
+		camonitor.accumulatedResultString = '';
 		camonitor.resetKillTimer = function(){
 			clearTimeout(camonitor.killTimer);
 			camonitor.killTimer = setTimeout(function(){
@@ -139,27 +144,57 @@ function spawnNewMonitor(PV, callback){
 			//Check for channel access connection errors
 			var camonitorString = data.toString('ascii');
 			if (camonitorString.indexOf("(PV not found)") != -1) {
-				console.log("Error for " + PVtoGet + ": " + data);
+				console.log("Error for " + camonitor.PV + ": " + data);
 				clearTimeout(camonitor.killTimer);
 				camonitor.kill();
 				return;
 			}
-
+			
 			//Split the data string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.
 			var resultArray = camonitorString.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});
-			camonitor.dataCache.PV = resultArray[0];
-			var tempParsedValue = parseFloat(resultArray[3]);
-			if (isNaN(tempParsedValue)){
-				camonitor.dataCache.value = resultArray[3];
+			if (resultArray.length <= 7) {
+				camonitor.dataCache.PV = resultArray[0];
+				var tempParsedValue = parseFloat(resultArray[3]);
+				if (isNaN(tempParsedValue)){
+					camonitor.dataCache.value = resultArray[3];
+				} else {
+					camonitor.dataCache.value = tempParsedValue;
+				}
+				camonitor.dataCache.timestamp = dateFromEPICSTimestamp(resultArray[1],resultArray[2]);
+				camonitor.dataCache.status = resultArray[4];
+				camonitor.dataCache.severity = resultArray[5];
 			} else {
-				camonitor.dataCache.value = tempParsedValue;
+				//With waveforms, it might take more than one 'data' event to transmit the entire string.
+				//We will look at the number of elements in the string we have so far compared to the number of values in the waveform.
+				//Until they are equal, just keep appending to the string.
+				if (camonitor.accumulating == false){
+					if (resultArray.length < parseInt(resultArray[3],10) + 4){
+						console.log(resultArray[0] + ": Expected " + (parseInt(resultArray[3],10) + 4) + " elements, " + resultArray.length + " collected so far...");
+						//We don't have all the data yet!  Accumulate...
+						//console.log("Starting accumulation for " + resultArray[0]);
+						camonitor.accumulating = true;
+						camonitor.accumulatedResultString += camonitorString;
+					}
+				} else {
+					camonitor.accumulatedResultString += camonitorString;
+					var accumulatedResultArray = camonitor.accumulatedResultString.split(" ").filter(function(val,index,array){ return (array[index] != "" && array[index] != "\n")});
+					//console.log(accumulatedResultArray[0] + ": Expected " + (parseInt(accumulatedResultArray[3],10) + 4) + " elements, " + accumulatedResultArray.length + " collected so far...");
+					if (accumulatedResultArray.length == parseInt(accumulatedResultArray[3],10) + 4) {
+						camonitor.accumulating = false;
+						camonitor.dataCache.PV = accumulatedResultArray[0];
+						camonitor.dataCache.timestamp = dateFromEPICSTimestamp(accumulatedResultArray[1],accumulatedResultArray[2]);
+						camonitor.dataCache.value = new Array();
+						for (var i=0; i<parseInt(accumulatedResultArray[3],10); i++) {
+							camonitor.dataCache.value[i] = accumulatedResultArray[i+4];
+						}
+						camonitor.accumulatedResultString = '';
+					}
+				}				
 			}
-			camonitor.dataCache.timestamp = dateFromEPICSTimestamp(resultArray[1],resultArray[2]);
-			camonitor.dataCache.status = resultArray[4];
-			camonitor.dataCache.severity = resultArray[5];
 			
 			//Emit an event signalling that the latest data has been parsed and cached.
-			camonitor.emit('cached',camonitor.dataCache);
+			if(!camonitor.accumulating){ camonitor.emit('cached',camonitor.dataCache); }
+			
 		});
 		
 		//Clean up when this process ends.
@@ -170,6 +205,87 @@ function spawnNewMonitor(PV, callback){
 		
 		callback(camonitor);
 	});
+}
+
+
+
+//get history for a PV from the channel archiver.  Doesn't work yet!
+
+function history(response, query) {
+	var PVtoGet = query["PV"];
+	//Default end time to now, start time to 24 hours ago.
+	var end_sec = Number(new Date())/1000;
+	var start_sec = end_sec - (60*60*24);
+	var count = 800;
+	var style = 0;
+	//Start Time in seconds since 1970
+	if (query["start"]) {
+		start_sec = parseInt(query["start"],10);
+	}
+	//End Time in seconds since 1970
+	if (query["end"]) {
+		end_sec = parseInt(query["end"],10);
+	}
+	//Number of samples.
+	if (query["count"]) {
+		count = parseInt(query["count"],10);
+	}
+	//0 = Raw, 1 = 'Spreadsheet' (Interpolated with staircase), 2 = Averaged (bin size = end-start/count), 3 = plot binned (binned into 'count' bins), 4 = linear (linearly interpolated)
+	if (query["style"]) {
+		style = parseInt(query["style"],10);
+	}
+	
+	//var xmlrpc = '<?xml version="1.0" encoding="UTF-8"?>\n\t<methodCall>\n\t\t<methodName>archiver.values</methodName>\n\t\t<params>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>1</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<array>\n\t\t\t\t\t\t<data>\n\t\t\t\t\t\t\t<value>\n\t\t\t\t\t\t\t\t<string>BPMS:LI24:801:X</string>\n\t\t\t\t\t\t\t</value>\n\t\t\t\t\t\t</data>\n\t\t\t\t\t</array>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>' + start_sec + '</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>0</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>'+ end_sec +'</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>0</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>800</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>0</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t</params>\n\t</methodCall>';
+	//var xmlrpc = '<?xml version="1.0" encoding="UTF-8"?><methodCall><methodName>archiver.names</methodName><params><param><value><int>1</int></value></param><param><value><string>GDET:FEE1:24[0-9]:ENRC</string></value></param></params></methodCall>'
+	var xmlrpc = "<?xml version='1.0'?>\n<methodCall>\n<methodName>archiver.values</methodName>\n<params>\n<param>\n<value><int>1</int></value>\n</param>\n<param>\n<value><array><data>\n<value><string>"+PVtoGet+"</string></value>\n</data></array></value>\n</param>\n<param>\n<value><int>"+start_sec.toFixed(0)+"</int></value>\n</param>\n<param>\n<value><int>0</int></value>\n</param>\n<param>\n<value><int>"+end_sec.toFixed(0)+"</int></value>\n</param>\n<param>\n<value><int>0</int></value>\n</param>\n<param>\n<value><int>"+count+"</int></value>\n</param>\n<param>\n<value><int>"+style+"</int></value>\n</param>\n</params>\n</methodCall>\n"
+	var archiverRequestOptions = {
+		host: 'lcls-archsrv',
+		port: 80,
+		path: '/cgi-bin/ArchiveDataServer.cgi',
+		method: 'POST',
+		headers: {'Content-Type': 'text/xml', 'Content-Length': Buffer.byteLength(xmlrpc, 'utf8') }
+	};
+
+	var req = http.request(archiverRequestOptions, function(archResponse) {
+		response.writeHead(200, {"Content-Type": "text", "Access-Control-Allow-Origin": "*"});
+		//console.log('STATUS: ' + archResponse.statusCode);
+		//console.log('HEADERS: ' + JSON.stringify(archResponse.headers));
+		archResponse.setEncoding('utf8');
+		
+		//Spawn a child node.js process to parse the XML, so that it doesn't block
+		//the main server thread.
+		var parser = fork(__dirname + '/parseHistory.js',[],{silent: true});
+		
+		parser.on('message', function(parsedObject) {
+			response.write(JSON.stringify(parsedObject));
+			response.end();
+		});
+		
+		archResponse.pipe(parser.stdin);
+		
+		var stack = [];
+		var containerTags = ['value','array','data','struct','member'];
+		
+		/*
+		archResponse.on('data', function(chunk) {
+			 response.write(chunk); 
+		});
+		
+		archResponse.on('end', function() {
+			response.end();
+		});
+		*/
+		archResponse.on('close', function(err) {
+			console.log("Archiver response was closed before end.  Error: " + err);
+		});
+	});
+	
+	req.on('error', function(err) {
+		console.log('Problem with request: ' + e.message);
+	});
+	
+	req.write(xmlrpc);
+	req.end();
 }
 
 function dateFromEPICSTimestamp(datestring,timestring) {
@@ -188,4 +304,5 @@ function dateFromEPICSTimestamp(datestring,timestring) {
 }
 
 exports.PV = PV;
+exports.history = history;
 exports.socketConnection = socketConnection;

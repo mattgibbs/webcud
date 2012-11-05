@@ -22,19 +22,19 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Machine Rate</h4>
 							</div>
-							<h1><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467">120 Hz</span></h1>
+							<h1 class="bigfont"><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467">120 Hz</span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Bunch Charge</h4>
 							</div>
-							<h1><span id="bunchCharge" class="PVmonitor" data-pv="FBCK:BCI0:1:CHRGSP">150 pC</span></h1>
+							<h1 class="bigfont"><span id="bunchCharge" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC997"></span></h1>
 						</div>
 						<div class="span6">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L3 Energy</h4>
 							</div>
-							<h1><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO289">?</span></h1>
+							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO289">?</span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -123,19 +123,19 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>FEL Pulse Energy</h4>
 							</div>
-							<h1><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569" data-precision="1">4.3 mJ</span></h1>
+							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569" data-precision="1">4.3 mJ</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Photon Energy</h4>
 							</div>
-							<h1><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span></h1>
+							<h1 class="bigfont"><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Amplification Mode</h4>
+								<h4>Scheduled User</h4>
 							</div>
-							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units="">?</span></h1>
+							<h1 class="bigfont"><span id="scheduledUser" class="PVmonitor" data-pv="SIOC:SYS0:ML01:SO0085" data-units="" data-updatetime="20000"></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -153,9 +153,9 @@
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Scheduled User</h4>
+								<h4>Amplification Mode</h4>
 							</div>
-							<h1><span id="scheduledUser" class="PVmonitor" data-pv="SIOC:SYS0:ML01:SO0085" data-units="" data-updatetime="20000"></span></h1>
+							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units="">?</span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -165,22 +165,23 @@
 					</div>
 				</div>
 			</div>
-			<div class="row" style="display:none"><!-- graph row begin -->
+			<div class="row"><!-- graph row begin -->
 				<div class="span20" id="history">
 					<div class="page-header">
 						<h1>24 Hour History</h1>
 					</div>
 					<script>
-					/*	var context = cubism.context().step(24*60*60*1000/1770).size(1770);
+						var plotWidth = 1770;
+						var context = cubism.context().step(24*60*60*1000 / plotWidth).size(plotWidth);
 						var gdetdata = gdethistory();
 						d3.select("#history").call(function(div) {
 							div.append("div").attr("class","axis").call(context.axis().orient("bottom"));							
 							div.selectAll(".horizon")
-								.data([fakedata])
+								.data([gdetdata])
 								.enter().insert("div",".axis")
 								.attr("class","horizon")
 								.call(context.horizon()
-										.extent([-10, 10])
+										.extent([-4, 4])
 										.height(150)
 										.mode("mirror")
 										.title("Gas Detector History")
@@ -188,23 +189,24 @@
 						});
 					
 						function gdethistory() {
-							var value = 0,
-								values = [],
-								i = 0,
-								last;
 							return context.metric(function(start, stop, step, callback) {
-								//This is just a goofy way to turn a Date object into a number in milliseconds
-								start = +start;
-								stop = +stop;
-								if (isNaN(last)) last = start;
-								while (last < stop) {
-									last += step;
-									value = Math.max(-10, Math.min(10, value + 0.8 * Math.random() - 0.4 + 0.2 * Math.cos(i +=  0.2)));
-									values.push(value);
-								}
-								callback(null, values = values.slice((start - stop) / step));
-							},);
-						}	*/
+								var gdets = [];
+								var count = Math.floor((stop - start)/step);
+								start = Math.floor(Number(start)/1000);
+								stop = Math.floor(Number(stop)/1000);
+								d3.json("http://lcls-prod02.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=2&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
+									//dataIncrement = Math.floor(gdetWaveform.value.length / plotWidth);
+									//for(i = 0; i < gdetWaveform.value.length; i = i + dataIncrement){
+									//	gdets.push(gdetWaveform.value[i]);
+									//}
+									gdets = historyResults.map(function(item){
+										return item.value;
+									});
+									
+									callback(null,gdets);
+								});
+							},null);
+						}
 					</script>
 				</div>
 			</div><!-- graph row end -->	

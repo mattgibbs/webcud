@@ -81,17 +81,34 @@ li.elogEntry {
 	/*font-weight: bold;*/
 }
 
-#emittanceTable th {
-	font-size: 18px;
-	line-height: 20px;
-	vertical-align: bottom;
+@media (max-width: 480px) {
+	#emittanceTable th {
+		font-size: 18px;
+		line-height: 20px;
+		vertical-align: bottom;
+	}
+
+	#emittanceTable td {
+		font-size: 27px;
+		line-height: 30px;
+		font-weight: bold;
+	}
+}
+@media (min-width: 480px) {
+	#emittanceTable th {
+		font-size: 18px;
+		line-height: 20px;
+		vertical-align: bottom;
+	}
+
+	#emittanceTable td {
+		font-size: 36px;
+		line-height: 40px;
+		font-weight: bold;
+	}
 }
 
-#emittanceTable td {
-	font-size: 36px;
-	line-height: 40px;
-	font-weight: bold;
-}
+
 
 h1.bigfont {
 	font-size: 45px;

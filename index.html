@@ -159,7 +159,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="span6">
+						<div class="span10">
 							
 						</div>
 					</div>
@@ -171,7 +171,8 @@
 						<h1>24 Hour History</h1>
 					</div>
 					<script>
-						var plotWidth = 1770;
+						//var plotWidth = 1770;
+						var plotWidth = document.getElementById('history').offsetWidth;
 						var context = cubism.context().step(24*60*60*1000 / plotWidth).size(plotWidth);
 						var gdetdata = gdethistory();
 						d3.select("#history").call(function(div) {
@@ -194,11 +195,7 @@
 								var count = Math.floor((stop - start)/step);
 								start = Math.floor(Number(start)/1000);
 								stop = Math.floor(Number(stop)/1000);
-								d3.json("http://lcls-prod02.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=2&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
-									//dataIncrement = Math.floor(gdetWaveform.value.length / plotWidth);
-									//for(i = 0; i < gdetWaveform.value.length; i = i + dataIncrement){
-									//	gdets.push(gdetWaveform.value[i]);
-									//}
+								d3.json("http://lcls-prod02.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=3&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
 									gdets = historyResults.map(function(item){
 										return item.value;
 									});

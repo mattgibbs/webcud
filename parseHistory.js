@@ -57,5 +57,6 @@ saxStream.on('end',function(){
 		return tempItem;
 	});
 	process.send(niceObject);
-})
+	process.stdin.pause();
+});
 

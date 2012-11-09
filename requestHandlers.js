@@ -259,6 +259,7 @@ function history(response, query) {
 		parser.on('message', function(parsedObject) {
 			response.write(JSON.stringify(parsedObject));
 			response.end();
+			parser.kill();
 		});
 		
 		archResponse.pipe(parser.stdin);

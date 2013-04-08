@@ -3,7 +3,6 @@ var router = require("./router");
 var requestHandlers = require("./requestHandlers");
 
 var handle = {}
-handle["/"] = requestHandlers.test;
 handle["/PV"] = requestHandlers.PV;
 handle["/history"] = requestHandlers.history;
 

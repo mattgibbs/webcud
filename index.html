@@ -123,7 +123,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>FEL Pulse Energy</h4>
 							</div>
-							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569" data-precision="1">4.3 mJ</span></h1>
+							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1">4.3 mJ</span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -195,7 +195,7 @@
 								var count = Math.floor((stop - start)/step);
 								start = Math.floor(Number(start)/1000);
 								stop = Math.floor(Number(stop)/1000);
-								d3.json("http://lcls-prod02.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=3&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
+								d3.json("http://lcls-prod02.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
 									gdets = historyResults.map(function(item){
 										return item.value;
 									});

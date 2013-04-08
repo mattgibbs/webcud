@@ -16,8 +16,6 @@ function start(route, handle) {
 	io.sockets.on('connection', socketConnection);
 }
 
-
-
 console.log("Server is running...");
 
 exports.start = start;

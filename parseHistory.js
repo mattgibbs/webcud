@@ -46,9 +46,9 @@ saxStream.on('text',function(text){
 });
 
 saxStream.on('end',function(){
-	//console.log(parsedObject);
-	parsedObject = parsedObject["PARAMS"]["PARAM"]["VALUE"]["ARRAY"]["DATA"]["VALUE"]["STRUCT"]["MEMBER"][4]["VALUE"]["ARRAY"]["DATA"]["VALUE"];
-	niceObject = parsedObject.map(function(item){
+	//Parsed object is some horrifyingly complicated associative array structure, that has something like 22 layers between the root and each individual value.  We want to take it, and turn it into something we can understand - an array of simple structures.  Each structure has four properties: status, severity, timestamp, and value.  The array we send is 'niceObject.'
+	parsedItems = parsedObject["PARAMS"]["PARAM"]["VALUE"]["ARRAY"]["DATA"]["VALUE"]["STRUCT"]["MEMBER"][4]["VALUE"]["ARRAY"]["DATA"]["VALUE"];
+	niceObject = parsedItems.map(function(item){
 		var tempItem = {};
 		tempItem.status = parseInt(item["STRUCT"]["MEMBER"][0]["VALUE"]["I4"]["text"],10);
 		tempItem.severity = parseInt(item["STRUCT"]["MEMBER"][1]["VALUE"]["I4"]["text"],10);

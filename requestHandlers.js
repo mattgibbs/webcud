@@ -8,7 +8,6 @@ var monitors = {};
 //HTTP GET request for a PV.
 function PV(response, query) {
 	var PVtoGet = query["PV"];
-	
 	//We will run this if we successfully get some PV data back.
 	function respondWithData(data) {
 		response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
@@ -30,7 +29,6 @@ function PV(response, query) {
 			newMonitor.once('cached',function(dataCache) {
 				if(dataCache !== undefined) {
 					respondWithData(dataCache);
-					//respondWithFailure();
 				} else {
 					respondWithFailure();
 				}
@@ -86,7 +84,7 @@ function spawnNewMonitor(PV, callback){
 	var stdoutdata = '', stderrdata = '';
 	var caget = spawn("camonitor", [PV+".EGU"]);
 	var camonitor;
-	//caget.stdout.on('data', function(data){ stdoutdata += data; caget.kill(); });
+	
 	caget.stdout.on('readable', function(){
 		var data = caget.stdout.read();
 		if (data !== null) {
@@ -94,7 +92,7 @@ function spawnNewMonitor(PV, callback){
 			caget.kill();
 		}	
 	});
-	//caget.stderr.on('data', function(data){ stderrdata += data; caget.kill(); });
+	
 	caget.stderr.on('readable', function(){
 		var data = caget.stdout.read();
 		if (data !== null) {

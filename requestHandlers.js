@@ -8,7 +8,7 @@ var monitors = {};
 //HTTP GET request for a PV.
 function PV(response, query) {
 	var PVtoGet = query["PV"];
-
+	
 	//We will run this if we successfully get some PV data back.
 	function respondWithData(data) {
 		response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
@@ -30,6 +30,7 @@ function PV(response, query) {
 			newMonitor.once('cached',function(dataCache) {
 				if(dataCache !== undefined) {
 					respondWithData(dataCache);
+					//respondWithFailure();
 				} else {
 					respondWithFailure();
 				}
@@ -85,10 +86,29 @@ function spawnNewMonitor(PV, callback){
 	var stdoutdata = '', stderrdata = '';
 	var caget = spawn("camonitor", [PV+".EGU"]);
 	var camonitor;
-	caget.stdout.on('data', function(data){ stdoutdata += data; caget.kill(); });
-	caget.stderr.on('data', function(data){ stderrdata += data; caget.kill(); });
+	//caget.stdout.on('data', function(data){ stdoutdata += data; caget.kill(); });
+	caget.stdout.on('readable', function(){
+		var data = caget.stdout.read();
+		if (data !== null) {
+			stdoutdata += data;
+			caget.kill();
+		}	
+	});
+	//caget.stderr.on('data', function(data){ stderrdata += data; caget.kill(); });
+	caget.stderr.on('readable', function(){
+		var data = caget.stdout.read();
+		if (data !== null) {
+			stderrdata += caget.stderr.read();
+			caget.kill();
+		}
+	});
 
-	caget.on('exit', function(code){
+	caget.on('error', function(err) {
+		console.log("Error spawning a camonitor to get units for the pv " + PV + ".  This might be happening because you didn't start the node server as bash, which is needed for all channel access processes.");
+		console.log(err);
+	});
+
+	caget.on('close', function(code, signal){
 		var units;
 		if (stderrdata !== "" ) {
 			//If there is a problem, no big deal, you just don't get a unit.
@@ -116,6 +136,7 @@ function spawnNewMonitor(PV, callback){
 		camonitor.accumulatedResultString = '';
 		camonitor.resetKillTimer = function(){
 			clearTimeout(camonitor.killTimer);
+			//Sets a timer that will kill the camonitor process if it is not used for 30 seconds.
 			camonitor.killTimer = setTimeout(function(){
 				camonitor.timedOut = true;
 				if (camonitor.socketConnections < 1) {
@@ -123,24 +144,27 @@ function spawnNewMonitor(PV, callback){
 					camonitor.kill();
 				}
 			},30*1000);
-		}
+		};
+		
 		camonitor.addSocketConnection = function(){
 			camonitor.socketConnections += 1;
 			console.log("Connections to " + camonitor.PV + ": " + camonitor.socketConnections);
-		}
+		};
+		
 		camonitor.removeSocketConnection = function(){
 			camonitor.socketConnections -= 1;
 			console.log("Connections to " + camonitor.PV + ": " + camonitor.socketConnections);
 			if (camonitor.socketConnections < 1 && camonitor.timedOut == true){
-				console.log("Ending inactive connection to " + camonitor.PV);
+				console.log("Last socket connection closed, ending inactive connection to " + camonitor.PV);
 				camonitor.kill();
 			}
-		}
+		};
 		
 		camonitor.resetKillTimer();
 		
 		//Update the dataCache any time this PV connection recieves new data.
-		camonitor.stdout.on('data', function(data){
+		camonitor.stdout.on('readable', function(){
+			var data = camonitor.stdout.read();
 			//Check for channel access connection errors
 			var camonitorString = data.toString('ascii');
 			if (camonitorString.indexOf("(PV not found)") != -1) {
@@ -198,9 +222,14 @@ function spawnNewMonitor(PV, callback){
 		});
 		
 		//Clean up when this process ends.
-		camonitor.on('exit', function(code){
+		camonitor.on('close', function(code){
 			console.log("Connection to " + camonitor.PV + " ended.");
 			delete monitors[camonitor.PV];
+		});
+		
+		camonitor.on('error', function(err) {
+			console.log("Error spawning a camonitor to get data for the pv " + camonitor.PV + ".  This might be happening because you didn't start the node server as bash, which is needed for all channel access processes.");
+			console.log(err);
 		});
 		
 		callback(camonitor);
@@ -213,6 +242,7 @@ function spawnNewMonitor(PV, callback){
 
 function history(response, query) {
 	var PVtoGet = query["PV"];
+	console.log("Getting history for PV: " + PVtoGet);
 	//Default end time to now, start time to 24 hours ago.
 	var end_sec = Number(new Date())/1000;
 	var start_sec = end_sec - (60*60*24);
@@ -235,8 +265,6 @@ function history(response, query) {
 		style = parseInt(query["style"],10);
 	}
 	
-	//var xmlrpc = '<?xml version="1.0" encoding="UTF-8"?>\n\t<methodCall>\n\t\t<methodName>archiver.values</methodName>\n\t\t<params>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>1</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<array>\n\t\t\t\t\t\t<data>\n\t\t\t\t\t\t\t<value>\n\t\t\t\t\t\t\t\t<string>BPMS:LI24:801:X</string>\n\t\t\t\t\t\t\t</value>\n\t\t\t\t\t\t</data>\n\t\t\t\t\t</array>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>' + start_sec + '</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>0</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>'+ end_sec +'</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>0</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>800</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t\t<param>\n\t\t\t\t<value>\n\t\t\t\t\t<int>0</int>\n\t\t\t\t</value>\n\t\t\t</param>\n\t\t</params>\n\t</methodCall>';
-	//var xmlrpc = '<?xml version="1.0" encoding="UTF-8"?><methodCall><methodName>archiver.names</methodName><params><param><value><int>1</int></value></param><param><value><string>GDET:FEE1:24[0-9]:ENRC</string></value></param></params></methodCall>'
 	var xmlrpc = "<?xml version='1.0'?>\n<methodCall>\n<methodName>archiver.values</methodName>\n<params>\n<param>\n<value><int>1</int></value>\n</param>\n<param>\n<value><array><data>\n<value><string>"+PVtoGet+"</string></value>\n</data></array></value>\n</param>\n<param>\n<value><int>"+start_sec.toFixed(0)+"</int></value>\n</param>\n<param>\n<value><int>0</int></value>\n</param>\n<param>\n<value><int>"+end_sec.toFixed(0)+"</int></value>\n</param>\n<param>\n<value><int>0</int></value>\n</param>\n<param>\n<value><int>"+count+"</int></value>\n</param>\n<param>\n<value><int>"+style+"</int></value>\n</param>\n</params>\n</methodCall>\n"
 	var archiverRequestOptions = {
 		host: 'lcls-archsrv',
@@ -254,22 +282,22 @@ function history(response, query) {
 		
 		//Spawn a child node.js process to parse the XML, so that it doesn't block
 		//the main server thread.
+		
 		var parser = fork(__dirname + '/parseHistory.js',[],{silent: true});
 		
 		parser.on('message', function(parsedObject) {
 			response.write(JSON.stringify(parsedObject));
 			response.end();
 			parser.kill();
+			//console.log(parsedObject.length);
 		});
 		
 		archResponse.pipe(parser.stdin);
 		
-		var stack = [];
-		var containerTags = ['value','array','data','struct','member'];
 		
 		/*
 		archResponse.on('data', function(chunk) {
-			 response.write(chunk); 
+			 response.write(chunk);
 		});
 		
 		archResponse.on('end', function() {

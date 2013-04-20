@@ -1,9 +1,7 @@
 var spawn = require("child_process").spawn;
 var fork = require("child_process").fork;
-//var util = require("util");
 var http = require("http");
 var camonitor = require("./camonitor");
-//var saxStream = require("./sax").createStream();
 var monitors = {};
 
 //HTTP GET request for a PV.
@@ -312,17 +310,6 @@ function history(response, query) {
 		});
 		
 		archResponse.pipe(parser.stdin);
-		
-		
-		/*
-		archResponse.on('data', function(chunk) {
-			 response.write(chunk);
-		});
-		
-		archResponse.on('end', function() {
-			response.end();
-		});
-		*/
 		archResponse.on('close', function(err) {
 			console.log("Archiver response was closed before end.  Error: " + err);
 		});
@@ -334,21 +321,6 @@ function history(response, query) {
 	
 	req.write(xmlrpc);
 	req.end();
-}
-
-function dateFromEPICSTimestamp(datestring,timestring) {
-	//Parse the date string into something we can plug into a javascript Date constructor.
-	var year = parseInt(datestring.substring(0,4),10);
-	var month = parseInt(datestring.substring(5,7),10)-1;
-	var day = parseInt(datestring.substring(8),10);
-	var hour = parseInt(timestring.substring(0,2),10);
-	var minute = parseInt(timestring.substring(3,5),10);
-	var second = parseInt(timestring.substring(6,8),10);
-	var millisecond = Math.round(parseInt(timestring.substring(9),10)/1000);
-	var parsedDate = new Date(year,month,day,hour,minute,second,millisecond);
-	var dateInMilliseconds = parsedDate.getTime();
-	parsedDate = null;
-	return dateInMilliseconds;
 }
 
 exports.PV = PV;

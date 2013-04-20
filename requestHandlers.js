@@ -2,6 +2,7 @@ var spawn = require("child_process").spawn;
 var fork = require("child_process").fork;
 //var util = require("util");
 var http = require("http");
+var camonitor = require("./camonitor");
 //var saxStream = require("./sax").createStream();
 var monitors = {};
 
@@ -25,21 +26,38 @@ function PV(response, query) {
 	
 	if (monitors[PVtoGet] === undefined) {
 		//This is a new connection.  Spawn a new camonitor.  Once it gets its first bit of data, respond with that.
-		spawnNewMonitor(PVtoGet, function(newMonitor){
-			newMonitor.once('cached',function(dataCache) {
-				if(dataCache !== undefined) {
-					respondWithData(dataCache);
-				} else {
-					respondWithFailure();
-				}
-			});
+		var newMonitor = camonitor.startConnection(PVtoGet,function(err,newMonitor){
+			if (err) {
+				console.log(err);
+			} else {
+				monitors[PVtoGet] = newMonitor;
+
+				//Clean up when this connection ends.
+				newMonitor.on('close', function(code){
+					console.log("Connection to " + newMonitor.PV + " ended.");
+					delete monitors[newMonitor.PV];
+				});
+
+				newMonitor.on('error', function(err) {
+					console.log("Error spawning a camonitor to get data for the pv " + newMonitor.PV + ".  This might be happening because you didn't start the node server as bash, which is needed for all channel access processes.");
+					console.log(err);
+				});
+
+				newMonitor.once('cached',function(data) {
+					if(data !== undefined) {
+						respondWithData(data);
+					} else {
+						respondWithFailure();
+					}
+				});
+			}
 		});
 	} else {
 		//This is an existing connection.  Respond with the latest cached data.
-		var camonitor = monitors[PVtoGet];
-		camonitor.resetKillTimer();
-		if(camonitor.dataCache !== undefined) {
-			respondWithData(camonitor.dataCache);
+		var existingMonitor = monitors[PVtoGet];
+		existingMonitor.resetKillTimer();
+		if(existingMonitor.dataCache !== undefined) {
+			respondWithData(existingMonitor.dataCache);
 		} else {
 			respondWithFailure();
 		}
@@ -47,6 +65,7 @@ function PV(response, query) {
 }
 
 //New WebSocket connection to the server.
+/*
 function socketConnection(socket) {
 	socket.setMaxListeners(100);
 	
@@ -78,7 +97,9 @@ function socketConnection(socket) {
 		}
 	});
 }
+*/
 
+/*
 function spawnNewMonitor(PV, callback){
 	//First, get the units for this PV.
 	var stdoutdata = '', stderrdata = '';
@@ -233,10 +254,10 @@ function spawnNewMonitor(PV, callback){
 		callback(camonitor);
 	});
 }
+*/
 
 
-
-//get history for a PV from the channel archiver.  Doesn't work yet!
+//Get history for a PV from the channel archiver via XML-RPC.
 
 function history(response, query) {
 	var PVtoGet = query["PV"];
@@ -332,4 +353,4 @@ function dateFromEPICSTimestamp(datestring,timestring) {
 
 exports.PV = PV;
 exports.history = history;
-exports.socketConnection = socketConnection;
+//exports.socketConnection = socketConnection;

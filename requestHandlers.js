@@ -1,7 +1,7 @@
 var spawn = require("child_process").spawn;
 var fork = require("child_process").fork;
 var http = require("http");
-var camonitor = require("./camonitor");
+var caClient = require("./caClient");
 var monitors = {};
 
 //HTTP GET request for a PV.
@@ -22,44 +22,21 @@ function PV(response, query) {
 		response.end();
 	}
 	
-	if (monitors[PVtoGet] === undefined) {
-		//This is a new connection.  Spawn a new camonitor.  Once it gets its first bit of data, respond with that.
-		var newMonitor = camonitor.startConnection(PVtoGet,function(err,newMonitor){
-			if (err) {
-				console.log(err);
-			} else {
-				monitors[PVtoGet] = newMonitor;
-
-				//Clean up when this connection ends.
-				newMonitor.on('close', function(code){
-					console.log("Connection to " + newMonitor.PV + " ended.");
-					delete monitors[newMonitor.PV];
-				});
-
-				newMonitor.on('error', function(err) {
-					console.log("Error spawning a camonitor to get data for the pv " + newMonitor.PV + ".  This might be happening because you didn't start the node server as bash, which is needed for all channel access processes.");
-					console.log(err);
-				});
-
-				newMonitor.once('cached',function(data) {
-					if(data !== undefined) {
-						respondWithData(data);
-					} else {
-						respondWithFailure();
-					}
-				});
-			}
-		});
-	} else {
-		//This is an existing connection.  Respond with the latest cached data.
-		var existingMonitor = monitors[PVtoGet];
-		existingMonitor.resetKillTimer();
-		if(existingMonitor.dataCache !== undefined) {
-			respondWithData(existingMonitor.dataCache);
-		} else {
+	caClient.get(PVtoGet,function(err,data){
+		if (err) {
+			console.log(err);
 			respondWithFailure();
+		} else {
+			respondWithData(data);
 		}
-	}
+	});	
+}
+
+function status(response, query) {
+	var data = caClient.status();
+	response.writeHead(200, {"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"});
+	response.write(JSON.stringify(data));
+	response.end();
 }
 
 //New WebSocket connection to the server.
@@ -325,4 +302,5 @@ function history(response, query) {
 
 exports.PV = PV;
 exports.history = history;
+exports.status = status;
 //exports.socketConnection = socketConnection;

@@ -4,7 +4,6 @@ var url = require("url");
 
 function start(route, handle) {
 	function onRequest(request, response) {
-		console.log(request.url);
 		var parsedURL = url.parse(request.url,true);
 		var pathname = parsedURL.pathname;
 		var query = parsedURL.query;

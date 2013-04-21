@@ -35,6 +35,7 @@ function getUnits(PV, callback) {
 
 	unitmonitor.on('error', function(err) {
 		console.log("Error spawning a camonitor to get units for the pv " + PV + ".  This might be happening because you didn't start the node server as bash, which is needed for all channel access processes.");
+		err.PV = PV;
 		return callback(err);
 	});
 
@@ -43,6 +44,7 @@ function getUnits(PV, callback) {
 		if (stderrdata !== "" ) {
 			//If there is a problem, no big deal, you just don't get a unit, and throw an error.
 			var err = new Error("Error finding units for PV " + PV + ".  Camonitor exited with error: " + stderrdata);
+			err.PV = PV;
 			return callback(err);
 		} else {
 			//Split the string into an array.  Whitespace denotes a new field.  Get rid of any blank fields.

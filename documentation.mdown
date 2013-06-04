@@ -1,0 +1,31 @@
+# Web Accelerator Data Server
+This is a guide that explains how the web accelerator data server works, how to set it up, and how to use it.  In short, the web accelerator data server is an API for getting accelerator data: a way to get channel access accelerator data over the web.  You send it HTTP requests (from a browser, a command line tool like WGET or curl, or from a custom application), and it returns the data from a PV in the [JSON format](http://www.json.org "JSON format").  The server is written as a [node.js](http://nodejs.org "node.js") application, and uses [EPICS](http://www.aps.anl.gov/epics/ "EPICS") (specifically Channel Access) to communicate with the accelerator. 
+
+## Installation and Set-up
+The web accelerator data server is built on a few separate pieces:
+1.	Node.js, which handles HTTP requests for accelerator data.
+2.	EPICS, which communicates with the accelerator, getting data from various accelerator devices (for example: Beam Position Monitors, Power Supplies, Thermocouples, Motor Controllers, etc).
+3.	[NGINX](http://nginx.org "NGINX"), a web server which receives all the HTTP requests, and in the case of accelerator data requests, forwards them to the node.js server, or in the case of requests for static data, serves it up.
+
+Instructions for installing these components will vary depending on where you are installing it.  This guide is written for installing on a Red Hat Enterprise Linux (RHEL) 5 machine.  Some steps may be simpler or more involved depending on what is available via your OS's package manager.
+
+### Node.js
+Node.js is not available in the RHEL 5 package repository (although it is in the Extra Packages for Enterprise Linux repository in RHEL 6).  We'll install it from source.  A great resource is the [official installation guide](https://github.com/joyent/node/wiki/Installation "Official Installation Guide").  The document you are reading now just regurgitates the official installation guide.
+
+To compile node.js, you'll need a somewhat-recent version of python (2.6 or above).  This should be pretty straightforward to get via your package manager.  
+
+First, we need to download the latest source tarball, which is availble at [http://nodejs.org/dist/node-latest.tar.gz](http://nodejs.org/dist/node-latest.tar.gz).  Once you've got it, unzip it, configure it, and make it:   
+	tar -xzvf node-latest.tar.gz && cd node-*   
+	./configure && make -j 3 && sudo make install
+
+NOTE: on lcls-prod03, I could not write to /usr/local/bin, so I had to do './configure --prefix=/opt/node' instead.
+
+Should be that easy!
+
+### EPICS
+EPICS needs to be installed from source.  The version you want to install depends more on the accelerator than on the web accelerator data server - choose the version that you think will work with the accelerator.  The EPICS base releases are available here: [http://www.aps.anl.gov/epics/download/base/index.php](http://www.aps.anl.gov/epics/download/base/index.php).  Setting up EPICS is not simple, and quite a bit of it depends on your particular environment.  The information below is how it is done at SLAC, for LCLS and FACET.  
+
+(INSERT INSTALLING EPICS CONTENT HERE)
+
+### NGINX
+NGINX is available in most package managers

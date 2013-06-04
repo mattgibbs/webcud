@@ -24,7 +24,7 @@ function PV(response, query) {
 	
 	caClient.get(PVtoGet,function(err,data){
 		if (err) {
-			console.log(err);
+			console.log("/PV Error: " + err);
 			respondWithFailure();
 		} else {
 			respondWithData(data);

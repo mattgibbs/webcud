@@ -26,9 +26,9 @@ function getUnits(PV, callback) {
 	});
 	
 	unitmonitor.stderr.on('readable', function(){
-		var data = unitmonitor.stdout.read();
+		var data = unitmonitor.stderr.read();
 		if (data !== null) {
-			stderrdata += unitmonitor.stderr.read();
+			stderrdata += data;
 			unitmonitor.kill();
 		}
 	});
@@ -56,7 +56,7 @@ function getUnits(PV, callback) {
 	});
 }
 
-//spawnMonitor spawns a new camonitor process for the PV we are interested in.
+//spawnMonitor spawns a new camonitor process for the PV we are interested in, and returns a reference to the monitor process.
 function spawnMonitor(PV,unitString){
 	console.log("Opening new connection to " + PV);
 	var monitor = spawn("camonitor", ["-f8",PV]);
@@ -102,6 +102,9 @@ function spawnMonitor(PV,unitString){
 	//Update the dataCache any time this PV connection recieves new data.
 	monitor.stdout.on('readable', function(){
 		var data = monitor.stdout.read();
+		if (data === null) {
+			return;
+		}
 		//Check for channel access connection errors
 		var camonitorString = data.toString('ascii');
 		if (camonitorString.indexOf("(PV not found)") != -1) {

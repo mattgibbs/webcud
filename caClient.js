@@ -14,7 +14,7 @@ If there already is one, it immediately sends the most recently cached value for
 If you pass an array, it gets all the values and returns an array of the values.
 */
 function get(PV,callback) {
-	
+	//If 'PV' is an array, assume each element is a string, and each string is a PV.  Call this function for each individual PV.
 	if( Object.prototype.toString.call( PV ) === '[object Array]' ) {
 	    var length = PV.length;
 		var singlePV = null;

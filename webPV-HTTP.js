@@ -79,13 +79,14 @@ bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(va
 	}
 });
 
-bindElementToPV("#L3Vernier","FBCK:FB04:LG01:DL2VERNIER",0,2000,function(val){
-	if (val < 0) {
-		return val + " MeV";
-	} else if (val > 0) {
-		return "+" + val + " MeV";
-	} else {
+var vernierElement = d3.select("#L3Vernier").datum(function() { return this.dataset; });
+
+bindElementToPV(vernierElement,vernierElement.pv,0,2000,function(val){
+	if (val == 0) {
 		return "";
+	} else {
+		var sign = val > 0 ? "+" : "-";
+		return " " + sign + " " + Math.abs(val) + " MeV";
 	}
 });
 

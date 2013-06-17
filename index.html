@@ -22,7 +22,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Machine Rate</h4>
 							</div>
-							<h1 class="bigfont"><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467">120 Hz</span></h1>
+							<h1 class="bigfont"><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467"></span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -34,7 +34,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L3 Energy</h4>
 							</div>
-							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="FBCK:FB04:LG01:DL2VERNIER">?</span></h1>
+							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3"></span><span id="L3Vernier" data-pv="FBCK:FB04:LG01:DL2VERNIER" data-units=""></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -78,13 +78,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC1 Peak Current</h4>
 							</div>
-							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO485">210 A</span></h1>
+							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO485"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L1S Phase</h4>
 							</div>
-							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1">-26.5&deg</span></h1>
+							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -98,13 +98,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC2 Peak Current</h4>
 							</div>
-							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO195">3100 A</span></h1>
+							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO195"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L2 Phase</h4>
 							</div>
-							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1">-36.4&deg</span></h1>
+							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -123,7 +123,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>FEL Pulse Energy</h4>
 							</div>
-							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1">4.3 mJ</span></h1>
+							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -143,7 +143,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Pulse Length</h4>
 							</div>
-							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820">52 fs</span></h1>
+							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -155,7 +155,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Amplification Mode</h4>
 							</div>
-							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units="">?</span></h1>
+							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units=""></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -194,7 +194,7 @@
 								var count = Math.floor((stop - start)/step);
 								start = Math.floor(Number(start)/1000);
 								stop = Math.floor(Number(stop)/1000);
-								d3.json("http://lcls-prod02.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
+								d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
 									gdets = historyResults.map(function(item){
 										return item.value;
 									});

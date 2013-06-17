@@ -1,4 +1,6 @@
 //Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
+var PV_URL = "http://lcls-prod03.slac.stanford.edu:8888/PV?PV=";
+
 d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
 	if(d.precision==null) {
 		d.precision = 0;
@@ -24,7 +26,7 @@ d3.selectAll(".emittanceValue").datum(function() { return this.dataset; }).each(
 		d.updatetime = 3000;
 	}
 	setInterval(function(){
-		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv, function(json){
+		d3.json(PV_URL + d.pv, function(json){
 			d3.select(elem).datum(function(d){
 					d.timestamp = json["timestamp"];
 					if (typeof json.value === 'number') {
@@ -52,7 +54,7 @@ d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(f
 		d.updatetime = 3000;
 	}
 	setInterval(function(){
-		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + d.pv, function(json){
+		d3.json(PV_URL + d.pv, function(json){
 			d3.select(elem).datum(function(d){
 					d.timestamp = json["timestamp"];
 					if (typeof json.value === 'number') {
@@ -77,6 +79,16 @@ bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(va
 	}
 });
 
+bindElementToPV("#L3Vernier","FBCK:FB04:LG01:DL2VERNIER",0,2000,function(val){
+	if (val < 0) {
+		return val + " MeV";
+	} else if (val > 0) {
+		return "+" + val + " MeV";
+	} else {
+		return "";
+	}
+});
+
 function bindElementToPV(elem, PV, precision, updateRate, processor) {
 	//Enforce a maximum update rate of 1 Hz.
 	if(updateRate < 1000){
@@ -90,7 +102,7 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 	}
 	
 	setInterval(function(){
-		d3.json("http://lcls-prod02.slac.stanford.edu:8888/PV?PV=" + PV, function(json){
+		d3.json(PV_URL + PV, function(json){
 			if(json.value!==undefined){
 				d3.select(elem).datum(function(d){
 					if (d === undefined) { d = {}; };

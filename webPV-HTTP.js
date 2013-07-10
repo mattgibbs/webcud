@@ -79,6 +79,31 @@ bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(va
 	}
 });
 
+
+setInterval(function(){
+	d3.json(PV_URL + "IOC:BSY0:MP01:REQBYKIKBRST", function(json){
+		if (json.value == "Yes") { 
+			d3.select("h2#burstMessage").transition().style("visibility","visible");
+		} else {
+			d3.select("h2#burstMessage").transition().style("visibility","hidden");
+		}
+	}, 3000);
+	
+	d3.json(PV_URL + "IOC:IN20:EV01:BYKIK_ABTACT", function(json){
+		if (json.value == "Enable") {
+			d3.json(PV_URL + "IOC:IN20:EV01:BYKIK_ABTPRD", function(json){
+				if (typeof json.value === 'number' && json.value < 2800) {
+					d3.select("h2#abortMessage").transition().style("visibility","visible");
+				} else {
+					d3.select("h2#abortMessage").transition().style("visibility","hidden");
+				}
+			});
+		} else {
+			d3.select("h2#abortMessage").transition().style("visibility","hidden");
+		}
+	}, 3000);
+});
+
 var vernierElement = d3.select("#L3Vernier").datum(function() { return this.dataset; }).each(function(d) {
 	bindElementToPV(this,d.pv,0,2000,function(val){
 		if (val == 0) {

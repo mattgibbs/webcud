@@ -3,12 +3,13 @@
 }
 
 .axis {
-  font: 10px sans-serif;
+  font: 14px sans-serif;
+	font-weight: bold;
   z-index: 2;
 }
 
 .axis text {
-  stroke: #FFF;
+  fill: white;
 }
 
 

@@ -1,12 +1,17 @@
 //Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
 var PV_URL = "http://lcls-prod03.slac.stanford.edu:8888/PV?PV=";
 
-d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
-	if(d.precision==null) {
-		d.precision = 0;
+d3.selectAll(".PVmonitor").datum(function() { 
+	return getDataAttributes(this);
+	//return this.dataset; 
+}).each(function(d) {
+	if (d) {
+		if (d.precision == null) {
+			d.precision = 0;
+		}
+		d3.select(this).text("?");
+		bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
 	}
-	d3.select(this).text("?");
-	bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
 });
 
 
@@ -20,7 +25,7 @@ var ageOpacityScale = d3.scale.linear()
 						.range([1, 0.3])
 						.clamp(true);
 							
-d3.selectAll(".emittanceValue").datum(function() { return this.dataset; }).each(function(d) {
+d3.selectAll(".emittanceValue").datum(function() { return getDataAttributes(this); }).each(function(d) {
 	var elem = this;
 	if (d.updatetime == undefined) {
 		d.updatetime = 3000;
@@ -48,7 +53,7 @@ var matchingColorScale = d3.scale.quantile()
 							.domain([1, 1.5])
 							.range(["#00CC22", "#FFFF00", "#FF4000"]);
 							
-d3.selectAll(".matchingValue").datum(function() { return this.dataset; }).each(function(d) {
+d3.selectAll(".matchingValue").datum(function() { return getDataAttributes(this); }).each(function(d) {
 	var elem = this;
 	if (d.updatetime == undefined) {
 		d.updatetime = 3000;
@@ -104,12 +109,13 @@ setInterval(function(){
 	}, 3000);
 });
 
-var vernierElement = d3.select("#L3Vernier").datum(function() { return this.dataset; }).each(function(d) {
-	bindElementToPV(this,d.pv,0,2000,function(val){
+var vernierElement = d3.select("#L3Vernier").datum(function() { return getDataAttributes(this); }).each(function(d) {
+	bindElementToPV(this,d.pv,d.precision,2000,function(val){
 		if (val == 0) {
 			return "";
 		} else {
 			var sign = val > 0 ? "+" : "-";
+			val = val.toFixed(d.precision);
 			return " " + sign + " " + Math.abs(val) + " MeV";
 		}
 	});
@@ -156,4 +162,21 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 			}
 		});
 	},updateRate);
+}
+
+function getDataAttributes(elem) {
+	var elemData = {};
+	if (elem.getAttribute('data-pv')) {
+		elemData.pv = elem.getAttribute('data-pv');
+	}
+	if (elem.getAttribute('data-precision') != null) {
+		elemData.precision = elem.getAttribute('data-precision');
+	}
+	
+	elemData.updatetime = elem.getAttribute('data-updatetime') || 3000;
+	
+	if (elem.getAttribute('data-units') != null) {
+		elemData.units = elem.getAttribute('data-units');
+	}
+	return elemData;
 }

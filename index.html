@@ -8,7 +8,6 @@
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link href="cud.css" rel="stylesheet">
 		<script src="d3/d3.v2.min.js"></script>
-		<script src="d3/cubism.v1.min.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -34,7 +33,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L3 Energy</h4>
 							</div>
-							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3"></span><span id="L3Vernier" data-pv="FBCK:FB04:LG01:DL2VERNIER" data-units=""></span></h1>
+							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3"></span><span id="L3Vernier" data-pv="FBCK:FB04:LG01:DL2VERNIER" data-units="" data-precision="1"></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -196,39 +195,100 @@
 						<h1>24 Hour History</h1>
 					</div>
 					<script>
-						//var plotWidth = 1770;
-						var plotWidth = document.getElementById('history').offsetWidth;
-						var context = cubism.context().step(24*60*60*1000 / plotWidth).size(plotWidth);
-						var gdetdata = gdethistory();
-						d3.select("#history").call(function(div) {
-							div.append("div").attr("class","axis").call(context.axis().orient("bottom"));							
-							div.selectAll(".horizon")
-								.data([gdetdata])
-								.enter().insert("div",".axis")
-								.attr("class","horizon")
-								.call(context.horizon()
-										.extent([-4, 4])
-										.height(150)
-										.mode("mirror")
-										.title("Gas Detector History")
-										.colors(["#3182bd", "#3182bd"]));
-						});
-					
-						function gdethistory() {
-							return context.metric(function(start, stop, step, callback) {
-								var gdets = [];
-								var count = Math.floor((stop - start)/step);
-								start = Math.floor(Number(start)/1000);
-								stop = Math.floor(Number(stop)/1000);
-								d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&start=" + start + "&end=" + stop + "&count=" + count, function(historyResults){
-									gdets = historyResults.map(function(item){
-										return item.value;
-									});
-									
-									callback(null,gdets);
+						var margin = {top: 20, right: 20, bottom: 20, left: 40};
+						var width = document.getElementById('history').offsetWidth - margin.left - margin.right;
+						var height = 150 - margin.top - margin.bottom;
+						
+						var x = d3.time.scale().range([0,width]);
+						
+						var y = d3.scale.linear().range([height,0]);
+						
+						var color = d3.scale.category10();
+						
+						var xAxis = d3.svg.axis().scale(x).orient("bottom");
+						var yAxis = d3.svg.axis().scale(y).orient("left");
+						
+						var line = d3.svg.line().interpolate("basis")
+																		.x(function(d) { return x(d.date); })
+																		.y(function(d) { return y(d.value); });
+																		
+						var area = d3.svg.area().interpolate("basis")
+																		.x(function(d) { return x(d.date); })
+																		.y0(height)
+																		.y1(function(d) { return y(d.value); });
+																		
+						var svg = d3.select("#history").append("svg")
+												.attr("width", width + margin.left + margin.right)
+												.attr("height", height + margin.top + margin.bottom)
+											.append("g")
+												.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+												
+						var xAxisElement = svg.append("g")
+								.attr("class", "x axis")
+								.attr("transform", "translate(0," + height + ")");
+						
+						var yAxisElement = svg.append("g").attr("class", "y axis")
+						
+						yAxisElement.append("text")
+													.attr("transform", "rotate(-90)")
+													.attr("y", 6)
+													.attr("dy", ".71em")
+													.style("text-anchor", "end")
+													.text("Pulse Energy (mJ)");
+						
+						var count = 400;
+						var updateTimeout;
+						function updateData() {
+							clearTimeout(updateTimeout);
+							console.log("Refreshing history graph.");
+							d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(data) {
+								//if (error) return console.warn(error);
+								color.domain(["Gas Detector"]);
+
+								data.forEach(function(d) { 
+									d.date = new Date(d.timestamp*1000); 
 								});
-							},null);
+
+								var traces = color.domain().map(function(name) {
+									return {
+										name: name,
+										values: data.map(function(d) { return { date: d.date, value: +d.value };
+										})
+									};
+								});
+
+								x.domain(d3.extent(data, function(d) { return d.date; }));
+								y.domain([
+								    d3.min(traces, function(t) { return d3.min(t.values, function(v) { return v.value; }); }),
+								    d3.max(traces, function(t) { return d3.max(t.values, function(v) { return v.value; }); })
+								  ]);
+
+								var trace = svg.selectAll(".trace").data(traces);
+
+								var newTrace = trace.enter().append("g").attr("class","trace")
+								var areaPath = newTrace.append("path")
+											.attr("class", "area")
+											.attr("d", function(d) { return area(d.values); })
+											.style("fill", function(d) { return d3.hsl(color(d.name)).darker(1); });															
+								var linePath = newTrace.append("path")
+											.attr("class", "line")
+											.attr("d", function(d) { return line(d.values); })
+											.style("stroke", function(d) { return color(d.name); });						
+
+								var updateTransition = trace.transition().duration(1000);
+								updateTransition.select(".area").attr("d", function(d) { return area(d.values); });
+								updateTransition.select(".line").attr("d", function(d) { return line(d.values); });
+
+								trace.exit().remove();
+
+								xAxisElement.call(xAxis);
+
+								yAxisElement.call(yAxis);
+								
+								updateTimeout = setTimeout(updateData,216000);
+							});
 						}
+						updateTimeout = setTimeout(updateData,10000);										
 					</script>
 				</div>
 			</div><!-- graph row end -->	

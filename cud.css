@@ -11,13 +11,21 @@
   stroke: #FFF;
 }
 
-.axis path {
-  display: none;
-}
 
-.axis line {
+
+.axis path, .axis line {
   stroke: #FFF;
   shape-rendering: crispEdges;
+  fill: none;
+}
+
+.line {
+  fill: none;
+  stroke-width: 2px;
+}
+
+.area {
+	
 }
 
 .axis.bottom {

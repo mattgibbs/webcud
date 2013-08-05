@@ -197,7 +197,7 @@
 					<script>
 						var margin = {top: 20, right: 20, bottom: 20, left: 40};
 						var width = document.getElementById('history').offsetWidth - margin.left - margin.right;
-						var height = 150 - margin.top - margin.bottom;
+						var height = 180 - margin.top - margin.bottom;
 						
 						var x = d3.time.scale().range([0,width]);
 						
@@ -285,7 +285,7 @@
 
 								yAxisElement.call(yAxis);
 								
-								updateTimeout = setTimeout(updateData,24*60*60/count);
+								updateTimeout = setTimeout(updateData,24*60*60*1000/count);
 							});
 						}
 						updateTimeout = setTimeout(updateData,10000);										

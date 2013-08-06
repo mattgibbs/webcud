@@ -7,7 +7,7 @@
 		<meta name="author" content="Matt Gibbs">
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
 		<link href="cud.css" rel="stylesheet">
-		<script src="d3/d3.v2.min.js"></script>
+		<script src="d3/d3.v3.min.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -241,8 +241,12 @@
 						function updateData() {
 							clearTimeout(updateTimeout);
 							console.log("Refreshing history graph.");
-							d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(data) {
-								//if (error) return console.warn(error);
+							d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(error, data) {
+								if (error) {
+									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
+									return console.warn(error);
+								}
+								
 								color.domain(["Gas Detector"]);
 
 								data.forEach(function(d) { 

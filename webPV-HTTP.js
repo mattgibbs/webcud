@@ -31,7 +31,8 @@ d3.selectAll(".emittanceValue").datum(function() { return getDataAttributes(this
 		d.updatetime = 3000;
 	}
 	setInterval(function(){
-		d3.json(PV_URL + d.pv, function(json){
+		d3.json(PV_URL + d.pv, function(error, json){
+			if (error) return console.log("There was an error loading " + PV_URL + d.pv);
 			d3.select(elem).datum(function(d){
 					d.timestamp = json["timestamp"];
 					if (typeof json.value === 'number') {
@@ -59,7 +60,8 @@ d3.selectAll(".matchingValue").datum(function() { return getDataAttributes(this)
 		d.updatetime = 3000;
 	}
 	setInterval(function(){
-		d3.json(PV_URL + d.pv, function(json){
+		d3.json(PV_URL + d.pv, function(error, json){
+			if (error) return console.log("There was an error loading " + PV_URL + d.pv);
 			d3.select(elem).datum(function(d){
 					d.timestamp = json["timestamp"];
 					if (typeof json.value === 'number') {
@@ -86,7 +88,8 @@ bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(va
 
 
 setInterval(function(){
-	d3.json(PV_URL + "IOC:BSY0:MP01:REQBYKIKBRST", function(json){
+	d3.json(PV_URL + "IOC:BSY0:MP01:REQBYKIKBRST", function(error, json){
+		if (error) return console.log("There was an error loading " + PV_URL + "IOC:BSY0:MP01:REQBYKIKBRST");
 		if (json.value == "Yes") { 
 			d3.select("h2#burstMessage").transition().style("visibility","visible");
 		} else {
@@ -94,7 +97,8 @@ setInterval(function(){
 		}
 	}, 3000);
 	
-	d3.json(PV_URL + "IOC:IN20:EV01:BYKIK_ABTACT", function(json){
+	d3.json(PV_URL + "IOC:IN20:EV01:BYKIK_ABTACT", function(error, json){
+		if (error) return console.log("There was an error loading " + PV_URL + "IOC:IN20:EV01:BYKIK_ABTACT");
 		if (json.value == "Enable") {
 			d3.json(PV_URL + "IOC:IN20:EV01:BYKIK_ABTPRD", function(json){
 				if (typeof json.value === 'number' && json.value < 2800) {
@@ -134,7 +138,8 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 	}
 	
 	setInterval(function(){
-		d3.json(PV_URL + PV, function(json){
+		d3.json(PV_URL + PV, function(error, json){
+			if (error) return console.log("There was an error loading " + PV_URL + PV);
 			if(json.value!==undefined){
 				d3.select(elem).datum(function(d){
 					if (d === undefined) { d = {}; };

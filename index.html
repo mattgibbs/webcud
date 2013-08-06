@@ -195,7 +195,7 @@
 						<h1>24 Hour Gas Detector History</h1>
 					</div>
 					<script>
-						var margin = {top: 20, right: 1, bottom: 20, left: 40};
+						var margin = {top: 20, right: 0, bottom: 20, left: 40};
 						var width = document.getElementById('history').offsetWidth - margin.left - margin.right;
 						var height = 180 - margin.top - margin.bottom;
 						
@@ -231,7 +231,7 @@
 						
 						yAxisElement.append("text")
 													.attr("transform", "rotate(-90)")
-													.attr("y", -40)
+													.attr("y", -margin.left)
 													.attr("dy", ".71em")
 													.style("text-anchor", "end")
 													.text("Pulse Energy (mJ)");
@@ -280,8 +280,8 @@
 									if (idx % 2 == 0) { return; }
 									yLinesElement.append("line")
 																.attr("class", "bgline")
-																.attr("x1",x.range()[0])
-																.attr("x2",x.range()[1])
+																.attr("x1",d3.min(x.range()))
+																.attr("x2",d3.max(x.range()))
 																.attr("y1",y(yTick))
 																.attr("y2",y(yTick));
 								});
@@ -299,8 +299,8 @@
 											.style("stroke", function(d) { return color(d.name); });						
 
 								var updateTransition = trace.transition().duration(1000);
-								updateTransition.selectAll(".area").attr("d", function(d) { return area(d.values); });
-								updateTransition.selectAll(".line").attr("d", function(d) { return line(d.values); });
+								updateTransition.select(".area").attr("d", function(d) { return area(d.values); });
+								updateTransition.select(".line").attr("d", function(d) { return line(d.values); });
 
 								trace.exit().remove();
 								
@@ -314,7 +314,7 @@
 
 								yAxisElement.append("text")
 															.attr("transform", "rotate(-90)")
-															.attr("y", -40)
+															.attr("y", -margin.left)
 															.attr("dy", ".71em")
 															.style("text-anchor", "end")
 															.text("Pulse Energy (mJ)");

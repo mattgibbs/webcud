@@ -245,11 +245,13 @@
 							console.log("Refreshing history graph.");
 							d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(error, data) {
 								if (error) {
+									console.log("An error was detected while getting history data.");
 									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
 									return console.warn(error);
 								}
 								
 								if (!data) {
+									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
 									return console.warn("No error, but history data was null!");
 								}
 								
@@ -273,8 +275,7 @@
 								    d3.max(traces, function(t) { return d3.max(t.values, function(v) { return v.value; }); })
 								  ]);
 								
-								yLinesElement.remove();
-								yLinesElement = svg.append("g").attr("class", "y bglines");
+								yLinesElement.selectAll(".bgline").remove();
 								y.ticks(5).forEach(function(yTick, idx) {
 									if (idx % 2 == 0) { return; }
 									yLinesElement.append("line")
@@ -298,8 +299,8 @@
 											.style("stroke", function(d) { return color(d.name); });						
 
 								var updateTransition = trace.transition().duration(1000);
-								updateTransition.select(".area").attr("d", function(d) { return area(d.values); });
-								updateTransition.select(".line").attr("d", function(d) { return line(d.values); });
+								updateTransition.selectAll(".area").attr("d", function(d) { return area(d.values); });
+								updateTransition.selectAll(".line").attr("d", function(d) { return line(d.values); });
 
 								trace.exit().remove();
 								

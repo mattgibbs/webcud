@@ -249,6 +249,10 @@
 									return console.warn(error);
 								}
 								
+								if (!data) {
+									return console.warn("No error, but history data was null!");
+								}
+								
 								color.domain(["Gas Detector"]);
 
 								data.forEach(function(d) { 

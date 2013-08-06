@@ -206,7 +206,7 @@
 						var color = d3.scale.category10();
 						
 						var xAxis = d3.svg.axis().scale(x).orient("bottom");
-						var yAxis = d3.svg.axis().scale(y).orient("left");
+						var yAxis = d3.svg.axis().scale(y).orient("left").ticks(5);
 						
 						var line = d3.svg.line().interpolate("basis")
 																		.x(function(d) { return x(d.date); })

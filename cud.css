@@ -12,7 +12,11 @@
   fill: white;
 }
 
-
+.bgline {
+	shape-rendering: crispEdges;
+	stroke: #595959;
+	fill: none;
+}
 
 .axis path, .axis line {
   stroke: #FFF;
@@ -26,7 +30,7 @@
 }
 
 .area {
-	
+	fill-opacity: 0.7;
 }
 
 .axis.bottom {

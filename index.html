@@ -243,7 +243,7 @@
 						function updateData() {
 							clearTimeout(updateTimeout);
 							console.log("Refreshing history graph.");
-							d3.json("http://lcls-prod03.slac.stanford.edu:8888/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(error, data) {
+							d3.json("http://lcls-prod03.slac.stanford.edu/PV/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(error, data) {
 								if (error) {
 									console.log("An error was detected while getting history data.");
 									updateTimeout = setTimeout(updateData,24*60*60*1000/count);

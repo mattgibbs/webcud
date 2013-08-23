@@ -1,7 +1,7 @@
 /*  webPV-HTTP.js
     This code looks for elements with the '.PVmonitor' class in your HTML file, and turns them into constantly updating PV monitors.    
 */
-var PV_URL = "http://lcls-prod03.slac.stanford.edu:8888/PV?PV=";
+var PV_URL = "http://lcls-prod03.slac.stanford.edu/PV?PV=";
 
 d3.selectAll(".PVmonitor").datum(function() { 
 	return getDataAttributes(this);

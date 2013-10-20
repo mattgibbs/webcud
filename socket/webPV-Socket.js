@@ -20,8 +20,8 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 			return d;
 		}
 	}
-	socket.emit('connectToPV',d);
-	socket.on(d.pv,function(json) {
+	socket.emit('connectToPV',PV);
+	socket.on(PV,function(json) {
 	    if(json.value!==undefined){
 			d3.select(elem).datum(function(d){
 				if (d === undefined) { d = {}; };

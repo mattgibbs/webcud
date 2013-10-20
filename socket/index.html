@@ -16,26 +16,26 @@
 			<div class="row">
 				<div class="span10">
 					<div class="page-header">
-						<h1>Linac Status</h1>
+						<h1>LCLS Linac Status</h1>
 					</div>
 					<div class="row">
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Machine Rate</h4>
 							</div>
-							<h1><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467">120 Hz</span></h1>
+							<h1 class="bigfont"><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467"></span></h1>
 						</div>
 						<div class="span2">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Bunch Charge</h4>
 							</div>
-							<h1><span id="bunchCharge" class="PVmonitor" data-pv="FBCK:BCI0:1:CHRGSP">150 pC</span></h1>
+							<h1 class="bigfont"><span id="bunchCharge" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC997"></span></h1>
 						</div>
 						<div class="span6">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L3 Energy</h4>
 							</div>
-							<h1><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3">6.71 GeV</span> + <span id="L3Vernier" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO289">?</span></h1>
+							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3"></span><span id="L3Vernier" data-pv="FBCK:FB04:LG01:DL2VERNIER" data-units="" data-precision="1"></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -79,13 +79,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC1 Peak Current</h4>
 							</div>
-							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO485">210 A</span></h1>
+							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO485"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L1S Phase</h4>
 							</div>
-							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1">-26.5&deg</span></h1>
+							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -99,13 +99,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC2 Peak Current</h4>
 							</div>
-							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO195">3100 A</span></h1>
+							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO195"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L2 Phase</h4>
 							</div>
-							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1">-36.4&deg</span></h1>
+							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -124,19 +124,19 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>FEL Pulse Energy</h4>
 							</div>
-							<h1><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO569" data-precision="1">4.3 mJ</span></h1>
+							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Photon Energy</h4>
 							</div>
-							<h1><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span></h1>
+							<h1 class="bigfont"><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Amplification Mode</h4>
+								<h4>Scheduled User</h4>
 							</div>
-							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units="">?</span></h1>
+							<h1 class="bigfont"><span id="scheduledUser" class="PVmonitor" data-pv="SIOC:SYS0:ML01:SO0085" data-units="" data-updatetime="20000"></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -144,7 +144,7 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Pulse Length</h4>
 							</div>
-							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820">52 fs</span></h1>
+							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -154,62 +154,187 @@
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Scheduled User</h4>
+								<h4>Amplification Mode</h4>
 							</div>
-							<h1><span id="scheduledUser" class="PVmonitor" data-pv="SIOC:SYS0:ML01:SO0085" data-units="" data-updatetime="20000"></span></h1>
+							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units=""></span></h1>
+						</div>
+					</div>
+					
+					<div class="page-header" style="padding-top: 30px">
+						<h1>Performance Statistics</h1>
+					</div>
+					<div class="row">
+						<div class="span3">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>Photon Availability</h4>
+							</div>
+							<h1 class="bigfont"><span id="photonAvailability" class="PVmonitor" data-pv="SIOC:SYS0:ML01:AO086" data-units="%"></span></h1>
+						</div>
+						<div class="span3">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>Historic Max Energy</h4>
+							</div>
+							<h1 class="bigfont"><span id="maxEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML01:AO080"></span></h1>
+						</div>
+						<div class="span3">
+							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
+								<h4>Historic Mean Energy</h4>
+							</div>
+							<h1 class="bigfont"><span id="meanEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML01:AO081"></span></h1>
 						</div>
 					</div>
 					<div class="row">
-						<div class="span6">
-							
+						<div class="span9">
+							<h2 id="abortMessage" style="visibility: hidden;">BYKICK aborting every <span class="PVmonitor" id="abortRate" data-pv="IOC:IN20:EV01:BYKIK_ABTPRD" data-units=""></span> pulses.</h2>
+							<h2 id="burstMessage" style="visibility: hidden;">Burst Mode is enabled, users requesting <span class="PVmonitor" id="burstRate" data-pv="EVNT:SYS0:1:LCLSBURSRATE"></span>.</h2>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="row" style="display:none"><!-- graph row begin -->
+			<div class="row"><!-- graph row begin -->
 				<div class="span20" id="history">
 					<div class="page-header">
-						<h1>24 Hour History</h1>
+						<h1>24 Hour Gas Detector History</h1>
 					</div>
 					<script>
-					/*	var context = cubism.context().step(24*60*60*1000/1770).size(1770);
-						var gdetdata = gdethistory();
-						d3.select("#history").call(function(div) {
-							div.append("div").attr("class","axis").call(context.axis().orient("bottom"));							
-							div.selectAll(".horizon")
-								.data([fakedata])
-								.enter().insert("div",".axis")
-								.attr("class","horizon")
-								.call(context.horizon()
-										.extent([-10, 10])
-										.height(150)
-										.mode("mirror")
-										.title("Gas Detector History")
-										.colors(["#3182bd", "#3182bd"]));
-						});
-					
-						function gdethistory() {
-							var value = 0,
-								values = [],
-								i = 0,
-								last;
-							return context.metric(function(start, stop, step, callback) {
-								//This is just a goofy way to turn a Date object into a number in milliseconds
-								start = +start;
-								stop = +stop;
-								if (isNaN(last)) last = start;
-								while (last < stop) {
-									last += step;
-									value = Math.max(-10, Math.min(10, value + 0.8 * Math.random() - 0.4 + 0.2 * Math.cos(i +=  0.2)));
-									values.push(value);
+						var margin = {top: 10, right: 0, bottom: 30, left: 60};
+						var width = document.getElementById('history').offsetWidth - margin.left - margin.right;
+						var height = 180 - margin.top - margin.bottom;
+						
+						var x = d3.time.scale().range([0,width]);
+						
+						var y = d3.scale.linear().range([height,0]);
+						
+						var color = d3.scale.category10();
+						
+						var xAxis = d3.svg.axis().scale(x).orient("bottom").tickSize(6,0);
+						var yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickSize(6,0);
+						
+						var line = d3.svg.line().interpolate("basis")
+																		.x(function(d) { return x(d.date); })
+																		.y(function(d) { return y(d.value); });
+																		
+						var area = d3.svg.area().interpolate("basis")
+																		.x(function(d) { return x(d.date); })
+																		.y0(height)
+																		.y1(function(d) { return y(d.value); });
+																		
+						var svg = d3.select("#history").append("svg")
+												.attr("width", width + margin.left + margin.right)
+												.attr("height", height + margin.top + margin.bottom)
+											.append("g")
+												.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+												
+						var xAxisElement = svg.append("g")
+								.attr("class", "x axis")
+								.attr("transform", "translate(0," + height + ")");
+						
+						var yAxisElement = svg.append("g").attr("class", "y axis");
+						
+						yAxisElement.append("text")
+													.attr("transform", "rotate(-90)")
+													.attr("y", -margin.left)
+													.attr("dy", ".71em")
+													.style("text-anchor", "end")
+													.text("Pulse Energy (mJ)");
+						
+						var yLinesElement = svg.append("g").attr("class", "y bglines");
+						
+						var count = 400;
+						var updateTimeout;
+						function updateData() {
+							clearTimeout(updateTimeout);
+							console.log("Refreshing history graph.");
+							d3.json("http://lcls-prod03.slac.stanford.edu/PV/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(error, data) {
+								if (error) {
+									console.log("An error was detected while getting history data.");
+									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
+									return console.warn(error);
 								}
-								callback(null, values = values.slice((start - stop) / step));
-							},);
-						}	*/
+								
+								if (!data) {
+									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
+									return console.warn("No error, but history data was null!");
+								}
+								
+								color.domain(["Gas Detector"]);
+
+								data.forEach(function(d) { 
+									d.date = new Date(d.timestamp*1000); 
+								});
+
+								var traces = color.domain().map(function(name) {
+									return {
+										name: name,
+										values: data.map(function(d) { return { date: d.date, value: +d.value };
+										})
+									};
+								});
+								
+								x.domain(d3.extent(data, function(d) { return d.date; }));
+								y.domain([
+								    d3.min(traces, function(t) { return d3.min(t.values, function(v) { return v.value; }); }),
+								    d3.max(traces, function(t) { return d3.max(t.values, function(v) { return v.value; }); })
+								  ]);
+								
+								yLinesElement.selectAll(".bgline").remove();
+								y.ticks(5).forEach(function(yTick, idx) {
+									if (idx % 2 == 0) { return; }
+									yLinesElement.append("line")
+																.attr("class", "bgline")
+																.attr("x1",d3.min(x.range()))
+																.attr("x2",d3.max(x.range()))
+																.attr("y1",y(yTick))
+																.attr("y2",y(yTick));
+								});
+								
+								var trace = svg.selectAll(".trace").data(traces);
+
+								var newTrace = trace.enter().append("g").attr("class","trace")
+								var areaPath = newTrace.append("path")
+											.attr("class", "area")
+											.attr("d", function(d) { return area(d.values); })
+											.style("fill", function(d) { return d3.hsl(color(d.name)).darker(1); });															
+								var linePath = newTrace.append("path")
+											.attr("class", "line")
+											.attr("d", function(d) { return line(d.values); })
+											.style("stroke", function(d) { return color(d.name); });						
+
+								var updateTransition = trace.transition().duration(1000);
+								updateTransition.select(".area").attr("d", function(d) { return area(d.values); });
+								updateTransition.select(".line").attr("d", function(d) { return line(d.values); });
+
+								trace.exit().remove();
+								
+								
+								xAxisElement.remove();
+								xAxisElement = svg.append("g")
+										.attr("class", "x axis")
+										.attr("transform", "translate(0," + height + ")");
+								yAxisElement.remove();
+								yAxisElement = svg.append("g").attr("class", "y axis");
+
+								yAxisElement.append("text")
+															.attr("transform", "rotate(-90)")
+															.attr("y", -margin.left)
+															.attr("dy", ".71em")
+															.style("text-anchor", "end")
+															.text("Pulse Energy (mJ)");
+								
+								
+								xAxisElement.call(xAxis);
+
+								yAxisElement.call(yAxis);
+								
+								updateTimeout = setTimeout(updateData,24*60*60*1000/count);
+							});
+						}
+						updateTimeout = setTimeout(updateData,10000);										
 					</script>
 				</div>
 			</div><!-- graph row end -->	
 		</div><!-- container end -->
 	</body>
 	<script src="webPV-Socket.js"></script>
+	<script src="webcud-socket.js"></script>
 </html>

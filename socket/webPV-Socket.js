@@ -1,4 +1,5 @@
 var socket = io.connect('http://lcls-prod03.slac.stanford.edu:8888');
+var PV_URL = "http://lcls-prod03.slac.stanford.edu/PV?PV=";
 
 d3.selectAll(".PVmonitor").datum(function() { 
 	return getDataAttributes(this);

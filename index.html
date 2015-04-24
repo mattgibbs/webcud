@@ -6,8 +6,10 @@
 		<title>LCLS Status</title>
 		<meta name="author" content="Matt Gibbs">
 		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+		<link href="metricsgraphics.css" rel="stylesheet">
 		<link href="cud.css" rel="stylesheet">
 		<script src="d3/d3.v3.min.js"></script>
+		<script src="metricsgraphics.min.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -194,145 +196,31 @@
 					<div class="page-header">
 						<h1>24 Hour Gas Detector History</h1>
 					</div>
+					<div id="gdethistory"></div>
 					<script>
-						var margin = {top: 10, right: 0, bottom: 30, left: 60};
-						var width = document.getElementById('history').offsetWidth - margin.left - margin.right;
-						var height = 180 - margin.top - margin.bottom;
-						
-						var x = d3.time.scale().range([0,width]);
-						
-						var y = d3.scale.linear().range([height,0]);
-						
-						var color = d3.scale.category10();
-						
-						var xAxis = d3.svg.axis().scale(x).orient("bottom").tickSize(6,0);
-						var yAxis = d3.svg.axis().scale(y).orient("left").ticks(5).tickSize(6,0);
-						
-						var line = d3.svg.line().interpolate("basis")
-																		.x(function(d) { return x(d.date); })
-																		.y(function(d) { return y(d.value); });
-																		
-						var area = d3.svg.area().interpolate("basis")
-																		.x(function(d) { return x(d.date); })
-																		.y0(height)
-																		.y1(function(d) { return y(d.value); });
-																		
-						var svg = d3.select("#history").append("svg")
-												.attr("width", width + margin.left + margin.right)
-												.attr("height", height + margin.top + margin.bottom)
-											.append("g")
-												.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-												
-						var xAxisElement = svg.append("g")
-								.attr("class", "x axis")
-								.attr("transform", "translate(0," + height + ")");
-						
-						var yAxisElement = svg.append("g").attr("class", "y axis");
-						
-						yAxisElement.append("text")
-													.attr("transform", "rotate(-90)")
-													.attr("y", -margin.left)
-													.attr("dy", ".71em")
-													.style("text-anchor", "end")
-													.text("Pulse Energy (mJ)");
-						
-						var yLinesElement = svg.append("g").attr("class", "y bglines");
-						
-						var count = 400;
-						var updateTimeout;
-						function updateData() {
-							clearTimeout(updateTimeout);
-							console.log("Refreshing history graph.");
-							d3.json("http://lcls-prod03.slac.stanford.edu/PV/history?PV=GDET:FEE1:241:ENRC&style=4&count=" + count, function(error, data) {
-								if (error) {
-									console.log("An error was detected while getting history data.");
-									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
-									return console.warn(error);
-								}
-								
-								if (!data) {
-									updateTimeout = setTimeout(updateData,24*60*60*1000/count);
-									return console.warn("No error, but history data was null!");
-								}
-								
-								color.domain(["Gas Detector"]);
-
-								data.forEach(function(d) { 
-									d.date = new Date(d.timestamp*1000); 
-								});
-
-								var traces = color.domain().map(function(name) {
-									return {
-										name: name,
-										values: data.map(function(d) { return { date: d.date, value: +d.value };
-										})
-									};
-								});
-								
-								x.domain(d3.extent(data, function(d) { return d.date; }));
-								y.domain([
-								    d3.min(traces, function(t) { return d3.min(t.values, function(v) { return v.value; }); }),
-								    d3.max(traces, function(t) { return d3.max(t.values, function(v) { return v.value; }); })
-								  ]);
-								
-								yLinesElement.selectAll(".bgline").remove();
-								y.ticks(5).forEach(function(yTick, idx) {
-									if (idx % 2 == 0) { return; }
-									yLinesElement.append("line")
-																.attr("class", "bgline")
-																.attr("x1",d3.min(x.range()))
-																.attr("x2",d3.max(x.range()))
-																.attr("y1",y(yTick))
-																.attr("y2",y(yTick));
-								});
-								
-								var trace = svg.selectAll(".trace").data(traces);
-
-								var newTrace = trace.enter().append("g").attr("class","trace")
-								var areaPath = newTrace.append("path")
-											.attr("class", "area")
-											.attr("d", function(d) { return area(d.values); })
-											.style("fill", function(d) { return d3.hsl(color(d.name)).darker(1); });															
-								var linePath = newTrace.append("path")
-											.attr("class", "line")
-											.attr("d", function(d) { return line(d.values); })
-											.style("stroke", function(d) { return color(d.name); });						
-
-								var updateTransition = trace.transition().duration(1000);
-								updateTransition.select(".area").attr("d", function(d) { return area(d.values); });
-								updateTransition.select(".line").attr("d", function(d) { return line(d.values); });
-
-								trace.exit().remove();
-								
-								
-								xAxisElement.remove();
-								xAxisElement = svg.append("g")
-										.attr("class", "x axis")
-										.attr("transform", "translate(0," + height + ")");
-								yAxisElement.remove();
-								yAxisElement = svg.append("g").attr("class", "y axis");
-
-								yAxisElement.append("text")
-															.attr("transform", "rotate(-90)")
-															.attr("y", -margin.left)
-															.attr("dy", ".71em")
-															.style("text-anchor", "end")
-															.text("Pulse Energy (mJ)");
-								
-								
-								xAxisElement.call(xAxis);
-
-								yAxisElement.call(yAxis);
-								
-								updateTimeout = setTimeout(updateData,24*60*60*1000/count);
-							});
-						}
-						updateTimeout = setTimeout(updateData,10000);										
+			      d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?pv=mean_360(SIOC:SYS0:ML00:CALC000)', function(data) {
+			        var time_series = data[0].data.map(function(item) {
+			          return {"date": new Date(item.secs * 1000), "val": item.val};
+			        });
+			        MG.data_graphic({
+			          title: "Gas Detector History",
+			          data: time_series,
+			          width: 800,
+			          full_width: true,
+			          height: 260,
+			          target: '#gdethistory',
+			          x_accessor: 'date',
+			          y_accessor: 'val',
+			          min_x: time_series[0].date,
+			          min_y: 0,
+			          area: true
+			        });
+			      });
 					</script>
 				</div>
 			</div><!-- graph row end -->	
 		</div><!-- container end -->
 	</body>
-	<script src="webPV-HTTP.js"></script>
-	<script src="webcud.js"></script>
+	<script src="socket/webPV-Socket.js"></script>
+	<script src="socket/webcud-socket.js"></script>
 </html>

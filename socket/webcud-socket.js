@@ -11,7 +11,7 @@ var ageOpacityScale = d3.scale.linear()
 						.domain([0, 16*60*60*1000]) //Make the values fade to 30% after 16 hours.
 						.range([1, 0.3])
 						.clamp(true);
-							
+/*							
 d3.selectAll(".emittanceValue").datum(function() { return getDataAttributes(this); }).each(function(d) {
 	var elem = this;
 	if (d.updatetime == undefined) {
@@ -36,7 +36,9 @@ d3.selectAll(".emittanceValue").datum(function() { return getDataAttributes(this
 		});
 	},d.updatetime);
 });
-
+*/
+            
+/*            
 //Get the match data.  This uses a different color scale than emittance, but is otherwise the same.
 var matchingColorScale = d3.scale.quantile()
 							.domain([1, 1.5])
@@ -65,7 +67,7 @@ d3.selectAll(".matchingValue").datum(function() { return getDataAttributes(this)
 		});
 	},d.updatetime);
 });
-
+*/
 //Get the amplification mode of the machine.  This has a custom data processor so that it can translate '1' or '0' into 'seeding' or 'SASE'.
 bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(val){
 	if (val == "0") {
@@ -74,7 +76,7 @@ bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(va
 		return "SASE";
 	}
 });
-
+/*
 //Get the BYKIK abort state, and show a message explaining it.
 setInterval(function(){
 	d3.json(PV_URL + "IOC:BSY0:MP01:REQBYKIKBRST", function(error, json){
@@ -101,7 +103,7 @@ setInterval(function(){
 		}
 	}, 3000);
 });
-
+*/
 //Get the vernier.  It gets a special data processor that adds a + or - sign to the text.
 var vernierElement = d3.select("#L3Vernier").datum(function() { return getDataAttributes(this); }).each(function(d) {
 	bindElementToPV(this,d.pv,d.precision,2000,function(val){

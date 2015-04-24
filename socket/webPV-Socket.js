@@ -1,5 +1,4 @@
-var socket = io.connect('http://lcls-prod03.slac.stanford.edu:8888');
-var PV_URL = "http://lcls-prod03.slac.stanford.edu/PV?PV=";
+
 
 d3.selectAll(".PVmonitor").datum(function() { 
 	return getDataAttributes(this);
@@ -14,15 +13,27 @@ d3.selectAll(".PVmonitor").datum(function() {
 	}
 });
 
-function bindElementToPV(elem, PV, precision, updateRate, processor) {	
+function bindElementToPV(elem, PV, precision, updateRate, processor) {
+  var socket = new WebSocket('ws://localhost:5000/monitor');
+  	
 	if (processor === undefined) {
 		processor = function(d) {
 			return d;
 		}
 	}
-	socket.emit('connectToPV',PV);
-	socket.on(PV,function(json) {
-	    if(json.value!==undefined){
+  
+  socket.onopen = function() {
+    console.log(PV);
+    socket.send(PV);
+  };
+  
+	socket.onmessage = function(event) {
+    var json = JSON.parse(event.data);
+    if (json.msg_type === "connection") {
+      return;
+    }
+    
+    if(json.value!==undefined){
 			d3.select(elem).datum(function(d){
 				if (d === undefined) { d = {}; };
 				json.value = processor(json.value);
@@ -46,8 +57,8 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 					return d.value + " " + d.units;
 				}
 			});
-		}
-    });
+	  }
+  };
 }
 
 function getDataAttributes(elem) {

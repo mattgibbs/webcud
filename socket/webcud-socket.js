@@ -116,3 +116,5 @@ var vernierElement = d3.select("#L3Vernier").datum(function() { return getDataAt
 		}
 	});
 });
+
+startConnection();

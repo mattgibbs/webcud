@@ -1,58 +1,18 @@
-var socket = new WebSocket('ws://localhost:5000/monitor');
 var pvMonitorMap = {};
-socket.onopen = function() {
-  d3.selectAll(".PVmonitor").datum(function() { 
-  	return getDataAttributes(this);
-  }).each(function(d) {
-  	if (d) {
-  		if (d.precision == null) {
-  			d.precision = 0;
-  		}
-  		d3.select(this).text("?");
-      bindElementToPV(socket, this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
-  	}
-  });
-};
 
-socket.onmessage = function(event) {
-  var json = JSON.parse(event.data);
-  if (json.msg_type === "connection") {
-    return;
-  }
-  if (json.msg_type === "monitor") {
-    if(json.value!==undefined){
-      var monitor = pvMonitorMap[json.pvname];
-      var elem = monitor["elem"];
-      var processor = monitor["processor"];
-      var precision = monitor["precision"];
-			d3.select(elem).datum(function(d){
-				if (d === undefined) { d = {}; };
-				json.value = processor(json.value);
-				if (typeof json.value === 'number') {
-					d.value = json.value.toFixed(d.precision);
-				} else {
-					d.value = json.value;
-				}
+d3.selectAll(".PVmonitor").datum(function() { 
+	return getDataAttributes(this);
+}).each(function(d) {
+	if (d) {
+		if (d.precision == null) {
+			d.precision = 0;
+		}
+		d3.select(this).text("?");
+    bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
+	}
+});
 
-				if (d.units === undefined) {
-					if (json.units !== undefined) {
-						d.units = json.units;
-					}
-				}
-				return d;
-			})
-			.text(function(d,i) {
-				if (d.units === undefined) {
-					return d.value;
-				} else {
-					return d.value + " " + d.units;
-				}
-			});
-	  }
-  }
-};
-
-function bindElementToPV(socket, elem, PV, precision, updateRate, processor) {
+function bindElementToPV(elem, PV, precision, updateRate, processor) {
 	if (processor === undefined) {
 		processor = function(d) {
 			return d;
@@ -61,8 +21,57 @@ function bindElementToPV(socket, elem, PV, precision, updateRate, processor) {
   elem.processor = processor;
   elem.precision = precision;
   pvMonitorMap[PV] = { "processor": processor, "precision": precision, "elem": elem };
-  socket.send(PV);
 }
+
+function startConnection() {
+  var socket = new WebSocket('ws://localhost:5000/monitor');
+  socket.onopen = function() {
+    for (var pv in pvMonitorMap) {
+      if (pvMonitorMap.hasOwnProperty(pv)) {
+        console.log("Connecting to PV: " + pv);
+        socket.send(pv);
+      } 
+    }
+  };
+  socket.onmessage = function(event) {
+    var json = JSON.parse(event.data);
+    if (json.msg_type === "connection") {
+      return;
+    }
+    if (json.msg_type === "monitor") {
+      if(json.value!==undefined){
+        var monitor = pvMonitorMap[json.pvname];
+        var elem = monitor["elem"];
+        var processor = monitor["processor"];
+        var precision = monitor["precision"];
+  			d3.select(elem).datum(function(d){
+  				if (d === undefined) { d = {}; };
+  				json.value = processor(json.value);
+  				if (typeof json.value === 'number') {
+  					d.value = json.value.toFixed(d.precision);
+  				} else {
+  					d.value = json.value;
+  				}
+
+  				if (d.units === undefined) {
+  					if (json.units !== undefined) {
+  						d.units = json.units;
+  					}
+  				}
+  				return d;
+  			})
+  			.text(function(d,i) {
+  				if (d.units === undefined) {
+  					return d.value;
+  				} else {
+  					return d.value + " " + d.units;
+  				}
+  			});
+  	  }
+    }
+  };
+}
+
 
 function getDataAttributes(elem) {
 	var elemData = {};

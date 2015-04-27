@@ -6,7 +6,7 @@
 }
 
 .mg-area1-color {
-    fill: #0000ff;
+    fill: #FF9700;
 }
 
 .mg-area2-color {
@@ -167,7 +167,7 @@
 }
 
 .mg-line1-color {
-    stroke: #4040e8;
+    stroke: #FF9700;
 }
 
 .mg-hover-line1-color {
@@ -277,7 +277,7 @@
 }
 
 path.mg-main-area {
-    opacity: 0.2;
+    opacity: 0.8;
     stroke: none;
 }
 
@@ -289,7 +289,7 @@ path.mg-confidence-band {
 
 path.mg-main-line {
     fill: none;
-    opacity: 0.8;
+    opacity: 1.0;
     stroke-width: 1.1px;
 }
 

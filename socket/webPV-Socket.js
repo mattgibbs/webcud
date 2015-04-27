@@ -1,39 +1,30 @@
+var socket = new WebSocket('ws://localhost:5000/monitor');
+var pvMonitorMap = {};
+socket.onopen = function() {
+  d3.selectAll(".PVmonitor").datum(function() { 
+  	return getDataAttributes(this);
+  }).each(function(d) {
+  	if (d) {
+  		if (d.precision == null) {
+  			d.precision = 0;
+  		}
+  		d3.select(this).text("?");
+      bindElementToPV(socket, this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
+  	}
+  });
+};
 
-
-d3.selectAll(".PVmonitor").datum(function() { 
-	return getDataAttributes(this);
-	//return this.dataset; 
-}).each(function(d) {
-	if (d) {
-		if (d.precision == null) {
-			d.precision = 0;
-		}
-		d3.select(this).text("?");
-		bindElementToPV(this, d.pv, d.precision, d.updatetime ? d.updatetime : 2000);
-	}
-});
-
-function bindElementToPV(elem, PV, precision, updateRate, processor) {
-  var socket = new WebSocket('ws://localhost:5000/monitor');
-  	
-	if (processor === undefined) {
-		processor = function(d) {
-			return d;
-		}
-	}
-  
-  socket.onopen = function() {
-    console.log(PV);
-    socket.send(PV);
-  };
-  
-	socket.onmessage = function(event) {
-    var json = JSON.parse(event.data);
-    if (json.msg_type === "connection") {
-      return;
-    }
-    
+socket.onmessage = function(event) {
+  var json = JSON.parse(event.data);
+  if (json.msg_type === "connection") {
+    return;
+  }
+  if (json.msg_type === "monitor") {
     if(json.value!==undefined){
+      var monitor = pvMonitorMap[json.pvname];
+      var elem = monitor["elem"];
+      var processor = monitor["processor"];
+      var precision = monitor["precision"];
 			d3.select(elem).datum(function(d){
 				if (d === undefined) { d = {}; };
 				json.value = processor(json.value);
@@ -58,7 +49,19 @@ function bindElementToPV(elem, PV, precision, updateRate, processor) {
 				}
 			});
 	  }
-  };
+  }
+};
+
+function bindElementToPV(socket, elem, PV, precision, updateRate, processor) {
+	if (processor === undefined) {
+		processor = function(d) {
+			return d;
+		}
+	}
+  elem.processor = processor;
+  elem.precision = precision;
+  pvMonitorMap[PV] = { "processor": processor, "precision": precision, "elem": elem };
+  socket.send(PV);
 }
 
 function getDataAttributes(elem) {
@@ -77,40 +80,3 @@ function getDataAttributes(elem) {
 	}
 	return elemData;
 }
-
-
-//Get units for each PVmonitor, then bind the elements to the PV server so that they update in real-time.
-/*
-d3.selectAll(".PVmonitor").datum(function() { return this.dataset; }).each(function(d) {
-	if(d.precision==null) {
-		d.precision = 0;
-	}
-	d3.select(this).text("?");
-	var elem = this;
-	socket.emit('connectToPV',d);
-	socket.on(d.pv,function(data) {
-		d3.select(elem).datum(function(d){
-			if (d === undefined) { d = {}; };
-			if (typeof data.value === 'number') {
-				d.value = data.value.toFixed(d.precision);
-			} else {
-				d.value = data.value;
-			}
-			
-			if (d.units === undefined) {
-				if (data.units !== undefined) {
-					d.units = data.units;
-				}
-			}
-			return d;
-		})
-		.text(function(d,i) {
-			if (d.units === undefined) {
-				return d.value;
-			} else {
-				return d.value + " " + d.units;
-			}
-		});
-	});
-});
-*/

@@ -207,13 +207,14 @@
 			          data: time_series,
 			          width: 800,
 			          full_width: true,
-			          height: 260,
+			          height: 160,
 			          target: '#gdethistory',
 			          x_accessor: 'date',
 			          y_accessor: 'val',
 			          min_x: time_series[0].date,
 			          min_y: 0,
-			          area: true
+			          area: true,
+                y_label: "mJ" 
 			        });
 			      });
 					</script>

@@ -12,15 +12,22 @@ d3.selectAll(".PVmonitor").datum(function() {
 	}
 });
 
-function bindElementToPV(elem, PV, precision, updateRate, processor) {
-	if (processor === undefined) {
+function bindElementToPV(elem, PV, precision, updateRate, processor, styler) {
+	if (processor === undefined || processor === null) {
 		processor = function(d) {
 			return d;
 		}
 	}
+  
+  if (styler === undefined) {
+    styler = function(elem) {
+      return;
+    }
+  }
+  
   elem.processor = processor;
   elem.precision = precision;
-  pvMonitorMap[PV] = { "processor": processor, "precision": precision, "elem": elem };
+  pvMonitorMap[PV] = { "processor": processor, "precision": precision, "elem": elem, "styler": styler };
 }
 
 function startConnection() {
@@ -44,6 +51,7 @@ function startConnection() {
         var elem = monitor["elem"];
         var processor = monitor["processor"];
         var precision = monitor["precision"];
+        var styler = monitor["styler"];
   			d3.select(elem).datum(function(d){
   				if (d === undefined) { d = {}; };
   				json.value = processor(json.value);
@@ -66,7 +74,8 @@ function startConnection() {
   				} else {
   					return d.value + " " + d.units;
   				}
-  			});
+  			})
+        .call(styler);
   	  }
     }
   };

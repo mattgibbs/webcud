@@ -31,7 +31,14 @@ function bindElementToPV(elem, PV, precision, updateRate, processor, styler) {
 }
 
 function startConnection() {
-  var socket = new WebSocket('ws://localhost:5000/monitor');
+  supportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
+  var socket;
+  if ('WebSocket' in window) {
+    socket = new WebSocket('ws://lcls-prod03/monitor');
+  } else if ('MozWebSocket' in window) {
+    socket = new MozWebSocket('ws://lcls-prod03/monitor');
+  }
+  
   socket.onopen = function() {
     for (var pv in pvMonitorMap) {
       if (pvMonitorMap.hasOwnProperty(pv)) {

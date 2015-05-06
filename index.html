@@ -51,9 +51,9 @@
 								</thead>
 								<tbody>
 									<tr>
-										<th>OTR-2</th>
-										<td><span id="OTR2XEmit" class="emittanceValue" data-pv="OTRS:IN20:571:EMITN_X" data-precision="2" data-units=""></span> / <span id="OTR2XMatch" class="matchingValue" data-pv="OTRS:IN20:571:BMAG_X" data-precision="2" data-units=""></span></td>
-										<td><span id="OTR2YEmit" class="emittanceValue" data-pv="OTRS:IN20:571:EMITN_Y" data-precision="2" data-units=""></span> / <span id="OTR2YMatch" class="matchingValue" data-pv="OTRS:IN20:571:BMAG_Y" data-precision="2" data-units=""></span></td>
+										<th>WS02</th>
+										<td><span id="WS02XEmit" class="emittanceValue" data-pv="WIRE:IN20:561:EMITN_X" data-precision="2" data-units=""></span> / <span id="WS02XMatch" class="matchingValue" data-pv="WIRE:IN20:561:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="WS02YEmit" class="emittanceValue" data-pv="WIRE:IN20:561:EMITN_Y" data-precision="2" data-units=""></span> / <span id="WS02YMatch" class="matchingValue" data-pv="WIRE:IN20:561:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
 										<th>WS12</th>
@@ -79,13 +79,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC1 Peak Current</h4>
 							</div>
-							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO485"></span></h1>
+							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="BLEN:LI21:265:AIMAX1H"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L1S Phase</h4>
 							</div>
-							<h1><span id="L1SPhase" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO479" data-units="&deg" data-precision="1"></span></h1>
+							<h1><span id="L1SPhase" class="PVmonitor" data-pv="ACCL:LI21:1:L1S_PDES" data-units="&deg" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -99,13 +99,13 @@
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC2 Peak Current</h4>
 							</div>
-							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO195"></span></h1>
+							<h1><span id="BC2PeakCurrent" class="PVmonitor" data-pv="BLEN:LI24:886:BIMAX1H"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L2 Phase</h4>
 							</div>
-							<h1><span id="L2Phase"  class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO487" data-units="&deg" data-precision="1"></span></h1>
+							<h1><span id="L2Phase"  class="PVmonitor" data-pv="ACCL:LI22:1:PDES" data-units="&deg" data-precision="1"></span></h1>
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
@@ -134,9 +134,9 @@
 						</div>
 						<div class="span3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Scheduled User</h4>
+								<h4>Amplification Mode</h4>
 							</div>
-							<h1 class="bigfont"><span id="scheduledUser" class="PVmonitor" data-pv="SIOC:SYS0:ML01:SO0085" data-units="" data-updatetime="20000"></span></h1>
+							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units=""></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -152,12 +152,6 @@
 							</div>
 							<h1><span id="eLoss" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO556"></span></h1>
 						</div>
-						<div class="span3">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Amplification Mode</h4>
-							</div>
-							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units=""></span></h1>
-						</div>
 					</div>
 					
 					<div class="page-header" style="padding-top: 30px">
@@ -169,18 +163,6 @@
 								<h4>Photon Availability</h4>
 							</div>
 							<h1 class="bigfont"><span id="photonAvailability" class="PVmonitor" data-pv="SIOC:SYS0:ML01:AO086" data-units="%"></span></h1>
-						</div>
-						<div class="span3">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Historic Max Energy</h4>
-							</div>
-							<h1 class="bigfont"><span id="maxEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML01:AO080"></span></h1>
-						</div>
-						<div class="span3">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Historic Mean Energy</h4>
-							</div>
-							<h1 class="bigfont"><span id="meanEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML01:AO081"></span></h1>
 						</div>
 					</div>
 					<div class="row">
@@ -198,25 +180,30 @@
 					</div>
 					<div id="gdethistory"></div>
 					<script>
-			      d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?pv=mean_360(SIOC:SYS0:ML00:CALC000)', function(data) {
-			        var time_series = data[0].data.map(function(item) {
-			          return {"date": new Date(item.secs * 1000), "val": item.val};
-			        });
-			        MG.data_graphic({
+						var gdet_plot_params = {
 			          title: "Gas Detector History",
-			          data: time_series,
 			          width: 800,
 			          full_width: true,
 			          height: 160,
 			          target: '#gdethistory',
 			          x_accessor: 'date',
 			          y_accessor: 'val',
-			          min_x: time_series[0].date,
 			          min_y: 0,
 			          area: true,
-                y_label: "mJ" 
-			        });
-			      });
+							y_label: "mJ" };
+							
+						function getGDETData() {
+							d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?pv=mean_360(SIOC:SYS0:ML00:CALC000)', function(data) {
+				        var time_series = data[0].data.map(function(item) {
+				          return {"date": new Date(item.secs * 1000), "val": item.val};
+				        });
+								gdet_plot_params.data = time_series;
+								gdet_plot_params.min_x = time_series[0].date;
+				        MG.data_graphic(gdet_plot_params);
+				      });
+						};
+						getGDETData();
+						setInterval(function() { getGDETData(); }, 120000);
 					</script>
 				</div>
 			</div><!-- graph row end -->	

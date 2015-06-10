@@ -181,9 +181,9 @@
 					<div id="gdethistory"></div>
 					<script>
 						var gdet_plot_params = {
-			          title: "Gas Detector History",
 			          width: 800,
 			          full_width: true,
+                x_extended_ticks: true,
 			          height: 160,
 			          target: '#gdethistory',
 			          x_accessor: 'date',
@@ -193,7 +193,9 @@
 							y_label: "mJ" };
 							
 						function getGDETData() {
-							d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?pv=mean_360(SIOC:SYS0:ML00:CALC000)', function(data) {
+              var now = new Date();
+              var oneDayAgo = new Date(now - 60*60*24*1000);
+							d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?pv=mean_360(SIOC:SYS0:ML00:CALC000)'+'&from='+oneDayAgo.toISOString()+'&to='+now.toISOString(), function(data) {
 				        var time_series = data[0].data.map(function(item) {
 				          return {"date": new Date(item.secs * 1000), "val": item.val};
 				        });

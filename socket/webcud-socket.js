@@ -93,4 +93,13 @@ var vernierElement = d3.select("#L3Vernier").datum(function() { return getDataAt
 	});
 });
 
+d3.select("#BC2PeakCurrent").datum(function() { return getDataAttributes(this); }).each(function(d) {
+	bindElementToPV(this,d.pv,d.precision,2000,function(val){
+		if (val > 100000) {
+			return 0;
+		}
+		return val;
+	});
+});
+
 startConnection();

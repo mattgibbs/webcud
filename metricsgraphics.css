@@ -6,7 +6,7 @@
 }
 
 .mg-area1-color {
-    fill: #0000ff;
+    fill: #FF9700;
 }
 
 .mg-area2-color {
@@ -171,7 +171,7 @@
 }
 
 .mg-line1-color {
-    stroke: #4040e8;
+    stroke: #FF9700;
 }
 
 .mg-hover-line1-color {
@@ -281,7 +281,7 @@
 }
 
 path.mg-main-area {
-    opacity: 0.2;
+    opacity: 0.8;
     stroke: none;
 }
 
@@ -336,9 +336,9 @@ circle.mg-points-mono {
 .mg-x-axis text,
 .mg-y-axis text,
 .mg-histogram .axis text {
-    fill: black;
-    font-size: 0.9rem;
-    opacity: 0.5;
+    fill: white;
+    font-size: 1.2rem;
+    opacity: 1.0;
 }
 
 .mg-x-axis .label,

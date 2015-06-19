@@ -34,7 +34,7 @@ function startConnection() {
   supportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
   var socket;
   if ('WebSocket' in window) {
-    socket = new WebSocket('ws://lcls-prod03/monitor');
+    socket = new WebSocket('ws://lcls-prod03.slac.stanford.edu/monitor');
   } else if ('MozWebSocket' in window) {
     socket = new MozWebSocket('ws://lcls-prod03/monitor');
   }

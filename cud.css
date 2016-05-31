@@ -27,6 +27,7 @@ li.elogEntry {
 		font-weight: bold;
 	}
 }
+
 @media (min-width: 480px) {
 	#emittanceTable th {
 		font-size: 18px;
@@ -41,9 +42,55 @@ li.elogEntry {
 	}
 }
 
-
-
 h1.bigfont {
 	font-size: 45px;
 	line-height: 50px;
+}
+
+@keyframes errorpulse {
+  0% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@-webkit-keyframes errorpulse {
+  0% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+@-moz-keyframes errorpulse {
+  0% {
+    opacity: .5;
+  }
+
+  100% {
+    opacity: 1.0;
+  }
+}
+
+.errorpulse {
+	animation-duration: 1s;
+	animation-name: errorpulse;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: ease-in-out;
+	-webkit-animation-duration: 1s;
+	-webkit-animation-name: errorpulse;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+	-webkit-animation-timing-function: ease-in-out;
+	-moz-animation-duration: 1s;
+	-moz-animation-name: errorpulse;
+	-moz-animation-iteration-count: infinite;
+	-moz-animation-direction: alternate;
+	-moz-animation-timing-function: ease-in-out;
 }

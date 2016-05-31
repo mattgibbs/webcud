@@ -1,4 +1,10 @@
 var pvMonitorMap = {};
+var retryTimer;
+var socket;
+
+function reloadPage() {
+  document.location.reload()
+}
 
 d3.selectAll(".PVmonitor").datum(function() { 
 	return getDataAttributes(this);
@@ -32,7 +38,6 @@ function bindElementToPV(elem, PV, precision, updateRate, processor, styler) {
 
 function startConnection() {
   supportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
-  var socket;
   if ('WebSocket' in window) {
     socket = new WebSocket('ws://lcls-prod03.slac.stanford.edu/monitor');
   } else if ('MozWebSocket' in window) {
@@ -40,6 +45,8 @@ function startConnection() {
   }
   
   socket.onopen = function() {
+    console.log("Connection opened.");
+    d3.select("#errormsg").text(null).classed("errorpulse", false);
     for (var pv in pvMonitorMap) {
       if (pvMonitorMap.hasOwnProperty(pv)) {
         console.log("Connecting to PV: " + pv);
@@ -47,6 +54,12 @@ function startConnection() {
       } 
     }
   };
+  socket.onclose = function() {
+    //Wait a few seconds, then try to re-establish the websocket connection.
+    console.log("Connection closed.  Attempting to reconnect in ten seconds...");
+    d3.select("#errormsg").text("Lost connection to server.  Reconnecting...").classed("errorpulse", true);
+    retryTimer = window.setTimeout(reloadPage, 10000);
+  }
   socket.onmessage = function(event) {
     var json = JSON.parse(event.data);
     if (json.msg_type === "connection") {

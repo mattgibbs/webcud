@@ -1,50 +1,48 @@
-.group {
-  margin-bottom: 1em;
+div.cell-label {
+  margin: 40px 0 20px 0px;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 2px;
+  font-size: 18px;
 }
 
-li.elogEntry {
-	display: inline;
-	font-size: 24px;
+.cell {
+  font-size: 36px;
+}
+
+#emittanceTable {
+  margin-top: 32px;
+}
+
+#emittanceTable th {
+	font-size: 18px;
+	line-height: 20px;
+	vertical-align: bottom;
+}
+
+#emittanceTable td {
+	font-size: 36px;
 	line-height: 40px;
-	font-weight: bold;
-	text-rendering: optimizelegibility;
 }
 
-.emittanceValue, .matchingValue{
-	/*font-weight: bold;*/
+@media (max-width: 1200px) {
+  div.cell-label {
+    font-size: 15px;
+  }
+  .cell {
+    font-size: 28px;
+  }
+  #emittanceTable th {
+    font-size: 15px;
+  }
+  #emittanceTable td {
+    font-size: 28px;
+  }
 }
 
 @media (max-width: 480px) {
-	#emittanceTable th {
-		font-size: 18px;
-		line-height: 20px;
-		vertical-align: bottom;
-	}
-
-	#emittanceTable td {
-		font-size: 24px;
-		line-height: 28px;
-		font-weight: bold;
-	}
-}
-
-@media (min-width: 480px) {
-	#emittanceTable th {
-		font-size: 18px;
-		line-height: 20px;
-		vertical-align: bottom;
-	}
-
-	#emittanceTable td {
-		font-size: 36px;
-		line-height: 40px;
-		font-weight: bold;
-	}
-}
-
-h1.bigfont {
-	font-size: 45px;
-	line-height: 50px;
+  #emittanceTable td {
+    font-size: 24px;
+  }
 }
 
 @keyframes errorpulse {

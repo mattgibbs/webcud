@@ -12,35 +12,34 @@
 		<script src="metricsgraphics.min.js"></script>
 	</head>
 	<body>
-		<div class="container">
+		<div class="container-fluid">
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
-					<div class="page-header">
+					<div class="cell-label">
 						<h1>LCLS Linac Status <span id="errormsg"></span></h1>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-3">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Machine Rate</h4>
+						<div class="col-xs-12 col-sm-6 col-md-3">
+							<div class="cell-label">
+								Machine Rate
 							</div>
-							<h1 class="bigfont"><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467"></span></h1>
+							<span id="machineRate" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:AO467"></span>
 						</div>
-						<div class="col-xs-12 col-sm-3">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Bunch Charge</h4>
+						<div class="col-xs-12 col-sm-6 col-md-3">
+							<div class="cell-label">
+								Bunch Charge
 							</div>
-							<h1 class="bigfont"><span id="bunchCharge" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC997"></span></h1>
+							<span id="bunchCharge" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:CALC997"></span>
 						</div>
-						<div class="col-xs-12 col-sm-6">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>L3 Energy</h4>
+						<div class="col-xs-12 col-sm-12 col-md-6">
+							<div class="cell-label">
+								L3 Energy
 							</div>
-							<h1 class="bigfont"><span id="L3Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3"></span><span id="L3Vernier" data-pv="FBCK:FB04:LG01:DL2VERNIER" data-units="" data-precision="1"></span></h1>
+							<span id="L3Energy" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:AO500" data-precision="3"></span><span id="L3Vernier" data-pv="FBCK:FB04:LG01:DL2VERNIER" data-units="" data-precision="1"></span>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-xs-12">
-							
 							<table class="table" id="emittanceTable">
 								<thead>
 									<tr>
@@ -51,22 +50,22 @@
 								</thead>
 								<tbody>
 									<tr>
-										<th>WS02</th>
+										<th scope="row">WS02</th>
 										<td><span id="WS02XEmit" class="emittanceValue" data-pv="WIRE:IN20:561:EMITN_X" data-precision="2" data-units=""></span> / <span id="WS02XMatch" class="matchingValue" data-pv="WIRE:IN20:561:BMAG_X" data-precision="2" data-units=""></span></td>
 										<td><span id="WS02YEmit" class="emittanceValue" data-pv="WIRE:IN20:561:EMITN_Y" data-precision="2" data-units=""></span> / <span id="WS02YMatch" class="matchingValue" data-pv="WIRE:IN20:561:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
-										<th>WS12</th>
+										<th scope="row">WS12</th>
 										<td><span id="WS12XEmit" class="emittanceValue" data-pv="WIRE:LI21:293:EMITN_X" data-precision="2" data-units=""></span> / <span id="WS12XMatch" class="matchingValue" data-pv="WIRE:LI21:293:BMAG_X" data-precision="2" data-units=""></span></td>
 										<td><span id="WS12YEmit" class="emittanceValue" data-pv="WIRE:LI21:293:EMITN_Y" data-precision="2" data-units=""></span> / <span id="WS12YMatch" class="matchingValue" data-pv="WIRE:LI21:293:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
-										<th>LI28</th>
+										<th scope="row">LI28</th>
 										<td><span id="LI28XEmit" class="emittanceValue" data-pv="WIRE:LI28:144:EMITN_X" data-precision="2" data-units=""></span> / <span id="LI28XMatch" class="matchingValue" data-pv="WIRE:LI28:144:BMAG_X" data-precision="2" data-units=""></span></td>
 										<td><span id="LI28YEmit" class="emittanceValue" data-pv="WIRE:LI28:144:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LI28YMatch" class="matchingValue" data-pv="WIRE:LI28:144:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 									<tr>
-										<th>LTU</th>
+										<th scope="row">LTU</th>
 										<td><span id="LTUXEmit" class="emittanceValue" data-pv="WIRE:LTU1:735:EMITN_X" data-precision="2" data-units=""></span> / <span id="LTUXMatch" class="matchingValue" data-pv="WIRE:LTU1:735:BMAG_X" data-precision="2" data-units=""></span></td>
 										<td><span id="LTUYEmit" class="emittanceValue" data-pv="WIRE:LTU1:735:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LTUYMatch" class="matchingValue" data-pv="WIRE:LTU1:735:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
@@ -75,86 +74,86 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>BC1 Peak Current</h4>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="cell-label">
+								BC1 Peak Current
 							</div>
-							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="BLEN:LI21:265:AIMAX1H"></span></h1>
+							<span id="BC1PeakCurrent" class="cell PVmonitor" data-pv="BLEN:LI21:265:AIMAX1H"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>L1S Phase</h4>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="cell-label">
+								L1S Phase
 							</div>
-							<h1><span id="L1SPhase" class="PVmonitor" data-pv="ACCL:LI21:1:L1S_PDES" data-units="&deg" data-precision="1"></span></h1>
+							<span id="L1SPhase" class="cell PVmonitor" data-pv="ACCL:LI21:1:L1S_PDES" data-units="&deg" data-precision="1"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>BC1 Energy</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								BC1 Energy
 							</div>
-							<h1><span id="BC1Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO483"></span></h1>
+							<span id="BC1Energy" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:AO483"></span>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>BC2 Peak Current</h4>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="cell-label">
+								BC2 Peak Current
 							</div>
-							<h1><span id="BC2PeakCurrent" data-pv="BLEN:LI24:886:BIMAX1H"></span></h1>
+							<span id="BC2PeakCurrent" class="cell PVmonitor" data-pv="BLEN:LI24:886:BIMAX1H"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>L2 Phase</h4>
+						<div class="col-xs-12 col-sm-6 col-md-4">
+							<div class="cell-label">
+								L2 Phase
 							</div>
-							<h1><span id="L2Phase"  class="PVmonitor" data-pv="ACCL:LI22:1:PDES" data-units="&deg" data-precision="1"></span></h1>
+							<span id="L2Phase"  class="cell PVmonitor" data-pv="ACCL:LI22:1:PDES" data-units="&deg" data-precision="1"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>BC2 Energy</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								BC2 Energy
 							</div>
-							<h1><span id="BC2Energy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO489" data-precision="1"></span></h1>
+							<span id="BC2Energy" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:AO489" data-precision="1"></span>
 						</div>
 					</div>
 				</div>
-				<div class="col-xs-12 col-sm-5 col-sm-offset-1"><!-- FEL Status -->
-					<div class="page-header">
+				<div class="col-xs-12 col-sm-6"><!-- FEL Status -->
+					<div class="cell-label">
 						<h1>FEL Status</h1>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>FEL Pulse Energy</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								FEL Pulse Energy
 							</div>
-							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1"></span></h1>
+							<span id="GDETEnergy" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Photon Energy</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								Photon Energy
 							</div>
-							<h1 class="bigfont"><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span></h1>
+							<span id="photonEnergy" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Amplification Mode</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								Amplification Mode
 							</div>
-							<h1><span id="amplificationMode" data-pv="SIOC:SYS0:ML00:CALC998" data-units=""></span></h1>
+							<span id="amplificationMode" class="cell"  data-pv="SIOC:SYS0:ML00:CALC998" data-units=""></span>
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Pulse Length</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								Pulse Length
 							</div>
-							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820"></span></h1>
+							<span id="pulseLength" class="cell PVmonitor" data-pv="SIOC:SYS0:ML00:AO820"></span>
 						</div>
-						<div class="col-xs-12 col-sm-4">
-							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
-								<h4>Energy Loss</h4>
+						<div class="col-xs-12 col-sm-12 col-md-4">
+							<div class="cell-label">
+								Energy Loss
 							</div>
-							<h1><span id="eLoss" class="PVmonitor" data-pv="PHYS:SYS0:1:ELOSSRESULT"></span></h1>
+							<span id="eLoss" class="cell PVmonitor" data-pv="PHYS:SYS0:1:ELOSSRESULT"></span>
 						</div>
 					</div>
 					<!--
-					<div class="page-header" style="padding-top: 30px">
+					<div class="cell-label" style="padding-top: 30px">
 						<h1>Scheduled Program</h1>
 					</div>
 					<div class="row">
@@ -164,8 +163,8 @@
 					</div>
 					<div class="row">
 						<div class="span9">
-							<h2 id="abortMessage" style="visibility: hidden;">BYKICK aborting every <span class="PVmonitor" id="abortRate" data-pv="IOC:IN20:EV01:BYKIK_ABTPRD" data-units=""></span> pulses.</h2>
-							<h2 id="burstMessage" style="visibility: hidden;">Burst Mode is enabled, users requesting <span class="PVmonitor" id="burstRate" data-pv="EVNT:SYS0:1:LCLSBURSRATE"></span>.</h2>
+							<h2 id="abortMessage" style="visibility: hidden;">BYKICK aborting every <span class="cell PVmonitor" id="abortRate" data-pv="IOC:IN20:EV01:BYKIK_ABTPRD" data-units=""></span> pulses.</h2>
+							<h2 id="burstMessage" style="visibility: hidden;">Burst Mode is enabled, users requesting <span class="cell PVmonitor" id="burstRate" data-pv="EVNT:SYS0:1:LCLSBURSRATE"></span>.</h2>
 						</div>
 					</div>
           -->
@@ -173,7 +172,7 @@
 			</div>
 			<div class="row"><!-- graph row begin -->
 				<div class="col-xs-12" id="history">
-					<div class="page-header">
+					<div class="cell-label">
 						<h1>24 Hour Gas Detector History</h1>
 					</div>
 					<div id="gdethistory"></div>

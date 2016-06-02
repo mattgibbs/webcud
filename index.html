@@ -14,24 +14,24 @@
 	<body>
 		<div class="container">
 			<div class="row">
-				<div class="span10">
+				<div class="col-xs-12 col-sm-6">
 					<div class="page-header">
 						<h1>LCLS Linac Status <span id="errormsg"></span></h1>
 					</div>
 					<div class="row">
-						<div class="span2">
+						<div class="col-xs-12 col-sm-3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Machine Rate</h4>
 							</div>
 							<h1 class="bigfont"><span id="machineRate" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO467"></span></h1>
 						</div>
-						<div class="span2">
+						<div class="col-xs-12 col-sm-3">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Bunch Charge</h4>
 							</div>
 							<h1 class="bigfont"><span id="bunchCharge" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC997"></span></h1>
 						</div>
-						<div class="span6">
+						<div class="col-xs-12 col-sm-6">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L3 Energy</h4>
 							</div>
@@ -39,7 +39,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="span10">
+						<div class="col-xs-12">
 							
 							<table class="table" id="emittanceTable">
 								<thead>
@@ -75,19 +75,19 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC1 Peak Current</h4>
 							</div>
 							<h1><span id="BC1PeakCurrent" class="PVmonitor" data-pv="BLEN:LI21:265:AIMAX1H"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L1S Phase</h4>
 							</div>
 							<h1><span id="L1SPhase" class="PVmonitor" data-pv="ACCL:LI21:1:L1S_PDES" data-units="&deg" data-precision="1"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC1 Energy</h4>
 							</div>
@@ -95,19 +95,19 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC2 Peak Current</h4>
 							</div>
 							<h1><span id="BC2PeakCurrent" data-pv="BLEN:LI24:886:BIMAX1H"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>L2 Phase</h4>
 							</div>
 							<h1><span id="L2Phase"  class="PVmonitor" data-pv="ACCL:LI22:1:PDES" data-units="&deg" data-precision="1"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>BC2 Energy</h4>
 							</div>
@@ -115,24 +115,24 @@
 						</div>
 					</div>
 				</div>
-				<div class="span9 offset1"><!-- FEL Status -->
+				<div class="col-xs-12 col-sm-5 col-sm-offset-1"><!-- FEL Status -->
 					<div class="page-header">
 						<h1>FEL Status</h1>
 					</div>
 					<div class="row">
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>FEL Pulse Energy</h4>
 							</div>
 							<h1 class="bigfont"><span id="GDETEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:CALC000" data-precision="1"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Photon Energy</h4>
 							</div>
 							<h1 class="bigfont"><span id="photonEnergy" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO627" data-precision="1"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Amplification Mode</h4>
 							</div>
@@ -140,13 +140,13 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Pulse Length</h4>
 							</div>
 							<h1><span id="pulseLength" class="PVmonitor" data-pv="SIOC:SYS0:ML00:AO820"></span></h1>
 						</div>
-						<div class="span3">
+						<div class="col-xs-12 col-sm-4">
 							<div class="page-header" style="padding-bottom:2px; margin-bottom:12px;">
 								<h4>Energy Loss</h4>
 							</div>
@@ -172,7 +172,7 @@
 				</div>
 			</div>
 			<div class="row"><!-- graph row begin -->
-				<div class="span20" id="history">
+				<div class="col-xs-12" id="history">
 					<div class="page-header">
 						<h1>24 Hour Gas Detector History</h1>
 					</div>

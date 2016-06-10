@@ -177,18 +177,22 @@
 					</div>
 					<div id="gdethistory"></div>
 					<script>
+            function gdetFormatter(num) {
+              return num + " mJ";
+            }
 						var gdet_plot_params = {
 			          width: 800,
 			          full_width: true,
+                top: 0,
                 y_extended_ticks: true,
-                xax_start_at_min: true,
+                axes_not_compact: true,
 			          height: 160,
 			          target: '#gdethistory',
 			          x_accessor: 'date',
 			          y_accessor: 'val',
 			          min_y: 0,
 			          area: true,
-							y_label: "mJ" };
+							  yax_format: gdetFormatter };
 							
 						function getGDETData() {
               var now = new Date();

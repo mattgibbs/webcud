@@ -177,13 +177,16 @@
 					</div>
 					<div id="gdethistory"></div>
 					<script>
+            var fixed_formatter = d3.format("0.1f");
             function gdetFormatter(num) {
-              return num + " mJ";
+              console.log(fixed_formatter(num) + "mJ");
+              return fixed_formatter(num) + "mJ";
             }
 						var gdet_plot_params = {
 			          width: 800,
 			          full_width: true,
-                top: 0,
+                top: 10,
+                left: 100,
                 y_extended_ticks: true,
                 axes_not_compact: true,
 			          height: 160,

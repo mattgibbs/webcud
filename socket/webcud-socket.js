@@ -43,6 +43,7 @@ d3.selectAll(".matchingValue").datum(function() { return getDataAttributes(this)
 });
 
 //Get the amplification mode of the machine.  This has a custom data processor so that it can translate '1' or '0' into 'seeding' or 'SASE'.
+/*
 bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(val){
 	if (val == "0") {
 		return "Seeded";
@@ -50,7 +51,7 @@ bindElementToPV("#amplificationMode","SIOC:SYS0:ML00:CALC998",0,3000,function(va
 		return "SASE";
 	}
 });
-
+*/
 /*
 //Get the BYKIK abort state, and show a message explaining it.
 setInterval(function(){

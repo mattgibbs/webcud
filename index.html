@@ -16,7 +16,7 @@
 			<div class="row">
 				<div class="col-xs-12 col-sm-6">
 					<div class="cell-label">
-						<h1>LCLS Linac Status <span id="errormsg"></span></h1>
+						<h1>LCLS NC Linac Status <span id="errormsg"></span></h1>
 					</div>
 					<div class="row">
 						<div class="col-xs-12 col-sm-6 col-md-3">
@@ -66,8 +66,8 @@
 									</tr>
 									<tr>
 										<th scope="row">LTU</th>
-										<td><span id="LTUXEmit" class="emittanceValue" data-pv="WIRE:LTU1:735:EMITN_X" data-precision="2" data-units=""></span> / <span id="LTUXMatch" class="matchingValue" data-pv="WIRE:LTU1:735:BMAG_X" data-precision="2" data-units=""></span></td>
-										<td><span id="LTUYEmit" class="emittanceValue" data-pv="WIRE:LTU1:735:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LTUYMatch" class="matchingValue" data-pv="WIRE:LTU1:735:BMAG_Y" data-precision="2" data-units=""></span></td>
+										<td><span id="LTUXEmit" class="emittanceValue" data-pv="WIRE:LTUH:735:EMITN_X" data-precision="2" data-units=""></span> / <span id="LTUXMatch" class="matchingValue" data-pv="WIRE:LTUH:735:BMAG_X" data-precision="2" data-units=""></span></td>
+										<td><span id="LTUYEmit" class="emittanceValue" data-pv="WIRE:LTUH:735:EMITN_Y" data-precision="2" data-units=""></span> / <span id="LTUYMatch" class="matchingValue" data-pv="WIRE:LTUH:735:BMAG_Y" data-precision="2" data-units=""></span></td>
 									</tr>
 								</tbody>
 							</table>
@@ -116,7 +116,7 @@
 				</div>
 				<div class="col-xs-12 col-sm-6"><!-- FEL Status -->
 					<div class="cell-label">
-						<h1>FEL Status</h1>
+						<h1>HXR FEL Status</h1>
 					</div>
 					<div class="row">
 						<div class="col-xs-12 col-sm-12 col-md-4">
@@ -167,50 +167,71 @@
 							<h2 id="burstMessage" style="visibility: hidden;">Burst Mode is enabled, users requesting <span class="cell PVmonitor" id="burstRate" data-pv="EVNT:SYS0:1:LCLSBURSRATE"></span>.</h2>
 						</div>
 					</div>
-          -->
+                    -->
 				</div>
 			</div>
 			<div class="row"><!-- graph row begin -->
 				<div class="col-xs-12" id="history">
 					<div class="cell-label">
-						<h1>24 Hour Gas Detector History</h1>
+						<h1>24 Hour HXR Gas Detector History</h1>
 					</div>
 					<div id="gdethistory"></div>
 					<script>
-            var fixed_formatter = d3.format("0.1f");
-            function gdetFormatter(num) {
-              console.log(fixed_formatter(num) + "mJ");
-              return fixed_formatter(num) + "mJ";
-            }
-						var gdet_plot_params = {
-			          width: 800,
-			          full_width: true,
-                top: 10,
-                left: 70,
-                y_extended_ticks: true,
-                axes_not_compact: true,
-			          height: 160,
-			          target: '#gdethistory',
-			          x_accessor: 'date',
-			          y_accessor: 'val',
-			          min_y: 0,
-			          area: true,
-							  yax_format: gdetFormatter };
-							
-						function getGDETData() {
-              var now = new Date();
-              var oneDayAgo = new Date(now - 60*60*24*1000);
-							d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getData.json?pv=mean_360(SIOC:SYS0:ML00:CALC000)'+'&from='+oneDayAgo.toISOString()+'&to='+now.toISOString(), function(data) {
-				        var time_series = data[0].data.map(function(item) {
-				          return {"date": new Date(item.secs * 1000), "val": item.val};
-				        });
-								gdet_plot_params.data = time_series;
-								gdet_plot_params.min_x = time_series[0].date;
-				        MG.data_graphic(gdet_plot_params);
-				      });
-						};
-						getGDETData();
-						setInterval(function() { getGDETData(); }, 120000);
+                        var fixed_formatter = d3.format("0.1f");
+                        function gdetFormatter(num) {
+                          console.log(fixed_formatter(num) + "mJ");
+                          return fixed_formatter(num) + "mJ";
+                        }
+                        var gdet_plot_params = {
+                            width: 800,
+                            full_width: true,
+                            top: 10,
+                            left: 70,
+                            y_extended_ticks: true,
+                            axes_not_compact: true,
+                            height: 160,
+                            target: '#gdethistory',
+                            x_accessor: 'date',
+                            y_accessor: 'val',
+                            min_y: 0,
+                            area: true,
+                            yax_format: gdetFormatter
+                        };
+                        var ipk_plot_params = {
+                            width: 800,
+                            full_width: true,
+                            top: 10,
+                            left: 70,
+                            bottom: 0,
+                            y_extended_ticks: true,
+                            height: 160,
+                            target: '#ipkhistory',
+                            x_accessor: 'date',
+                            y_accessor: 'val',
+                            min_y: 0,
+                            area: true,
+                            x_axis: false,
+                        };
+                        function getGDETData() {
+                            var now = new Date();
+                            var oneDayAgo = new Date(now - 60*60*24*1000);
+                            d3.json('http://lcls-archapp.slac.stanford.edu/retrieval/data/getDataForPVs.json?pv=mean_90(SIOC:SYS0:ML00:CALC000)&pv=mean_90(FBCK:FB04:LG01:S5DES)'+'&from='+oneDayAgo.toISOString()+'&to='+now.toISOString(), function(data) {
+                                var gdet_time_series = data[0].data.map(function(item) {
+                                    return {"date": new Date(item.secs * 1000), "val": item.val};
+                                });
+                                var ipk_time_series = data[1].data.map(function(item) {
+                                    return {"date": new Date(item.secs * 1000), "val": item.val};
+                                });
+                                gdet_plot_params.data = gdet_time_series;
+                                gdet_plot_params.min_x = gdet_time_series[0].date;
+                                MG.data_graphic(gdet_plot_params);
+                                //ipk_plot_params.data = ipk_time_series;
+                                //ipk_plot_params.min_x = ipk_time_series[0].date;
+                                //MG.data_graphic(ipk_plot_params);
+                            });
+                        };
+                        getGDETData();
+                        setInterval(function() { getGDETData(); }, 120000);
 					</script>
 				</div>
 			</div><!-- graph row end -->	

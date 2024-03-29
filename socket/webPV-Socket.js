@@ -36,13 +36,8 @@ function bindElementToPV(elem, PV, precision, updateRate, processor, styler) {
   pvMonitorMap[PV] = { "processor": processor, "precision": precision, "elem": elem, "styler": styler };
 }
 
-function startConnection() {
-  supportsWebSockets = 'WebSocket' in window || 'MozWebSocket' in window;
-  if ('WebSocket' in window) {
-    socket = new WebSocket('ws://lcls-prod03.slac.stanford.edu/monitor');
-  } else if ('MozWebSocket' in window) {
-    socket = new MozWebSocket('ws://lcls-prod03/monitor');
-  }
+function startConnection() {  
+  var socket = new WebSocket('ws://aosd.slac.stanford.edu/brews/');
   
   socket.onopen = function() {
     console.log("Connection opened.");
@@ -50,7 +45,7 @@ function startConnection() {
     for (var pv in pvMonitorMap) {
       if (pvMonitorMap.hasOwnProperty(pv)) {
         console.log("Connecting to PV: " + pv);
-        socket.send(pv);
+        socket.send(JSON.stringify({"subscribe": pv}));
       } 
     }
   };
@@ -62,12 +57,45 @@ function startConnection() {
   }
   socket.onmessage = function(event) {
     var json = JSON.parse(event.data);
+    console.log(json);
+    if(json.value!==undefined){
+      var monitor = pvMonitorMap[json.pv];
+      var elem = monitor["elem"];
+      var processor = monitor["processor"];
+      var precision = monitor["precision"];
+      var styler = monitor["styler"];
+      d3.select(elem).datum(function(d){
+        if (d === undefined) { d = {}; };
+        json.value = processor(json.value);
+        if (typeof json.value === 'number') {
+          d.value = json.value.toFixed(d.precision);
+        } else {
+          d.value = json.value;
+        }
+    
+        if (d.units === undefined) {
+          if (json.units !== undefined) {
+            d.units = json.units;
+          }
+        }
+        return d;
+      })
+      .text(function(d,i) {
+        if (d.units === undefined) {
+          return d.value;
+        } else {
+          return d.value + " " + d.units;
+        }
+      })
+      .call(styler);
+    }
+    /*
     if (json.msg_type === "connection") {
       return;
     }
     if (json.msg_type === "monitor") {
       if(json.value!==undefined){
-        var monitor = pvMonitorMap[json.pvname];
+        var monitor = pvMonitorMap[json.pv];
         var elem = monitor["elem"];
         var processor = monitor["processor"];
         var precision = monitor["precision"];
@@ -98,6 +126,7 @@ function startConnection() {
         .call(styler);
   	  }
     }
+    */
   };
 }
 
